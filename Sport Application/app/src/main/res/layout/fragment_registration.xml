@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dark_background_color"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginBottom="15dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:textColor="@color/white"
+            android:text="Choose Email" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginBottom="10dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/hint_color"
+            android:textSize="14sp"
+            android:text="You can't change your email after registered" />
+
+        <EditText
+            android:id="@+id/editTextEmail"
+            android:paddingStart="10dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingEnd="10dp"
+            android:layout_width="match_parent"
+            android:background="@drawable/edit_text_border"
+            android:layout_height="48dp"
+            android:textColorHint="#D4D4D4"
+            android:textSize="15sp"
+            android:textColor="@color/white"
+            android:inputType="textEmailAddress"
+            android:hint="Email" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="15dp">
+
+
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_border"
+                android:paddingStart="10dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingEnd="10dp"
+                android:textColorHint="#D4D4D4"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:inputType="textPassword"
+                android:hint="Password" />
+
+
+            <ImageButton
+                android:id="@+id/imageButtonShowPasswordFirst"
+                android:layout_width="28dp"
+                android:scaleType="fitCenter"
+                android:layout_height="28dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/eye_visible_icon" />
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="15dp">
+
+
+            <EditText
+                android:id="@+id/editTextConfirmPassword"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/edit_text_border"
+                android:paddingStart="10dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingEnd="10dp"
+                android:textColorHint="#D4D4D4"
+                android:textSize="15sp"
+                android:textColor="@color/white"
+                android:inputType="textPassword"
+                android:hint="Confirm Password" />
+
+
+            <ImageButton
+                android:id="@+id/imageButtonShowPasswordSecond"
+                android:layout_width="28dp"
+                android:scaleType="fitCenter"
+                android:layout_height="28dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/eye_visible_icon" />
+
+        </FrameLayout>
+
+
+        <Button
+            android:id="@+id/buttonRegister"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/empty_button_border"
+            android:text="Register"
+            android:textAllCaps="false"
+            android:textColor="@color/half_light_text_color"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

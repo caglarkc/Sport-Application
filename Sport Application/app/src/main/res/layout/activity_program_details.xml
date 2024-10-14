@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:background="@color/dark_background_color"
+    android:fillViewport="true"
+    android:layout_height="match_parent"
+    tools:context=".ProgramDetailsActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="20dp"
+            android:layout_height="690dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="0dp">
+
+                <TextView
+                    android:id="@+id/programNameContainer"
+                    android:layout_width="match_parent"
+                    android:gravity="center"
+                    android:textSize="25sp"
+                    android:textStyle="italic|bold"
+                    android:layout_marginBottom="1dp"
+                    android:layout_height="wrap_content"
+                    android:text="ProgramName"
+                    android:textColor="@color/white"/>
+
+                <TextView
+                    android:id="@+id/userDetailContainer"
+                    android:layout_width="match_parent"
+                    android:gravity="end"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="20dp"
+                    android:textStyle="italic"
+                    android:layout_marginBottom="20dp"
+                    android:layout_height="wrap_content"
+                    android:text="Creator: Ali Çağlar"
+                    android:textColor="@color/hint_color"/>
+
+
+
+                <LinearLayout
+                    android:id="@+id/programContainer"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+
+
+    </RelativeLayout>
+
+
+</ScrollView>

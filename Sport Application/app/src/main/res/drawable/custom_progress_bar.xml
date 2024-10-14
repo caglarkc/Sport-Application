@@ -1,0 +1,12 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <rotate
+            android:fromDegrees="0"
+            android:toDegrees="360"
+            android:pivotX="50%"
+            android:pivotY="50%"
+            android:drawable="@drawable/progress_circle_icon"
+            android:duration="1000"
+            android:repeatCount="infinite" />
+    </item>
+</layer-list>

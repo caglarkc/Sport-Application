@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:background="@color/dark_background_color"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".AddNewProgramActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content">
+
+
+        <LinearLayout
+            android:layout_marginTop="10dp"
+            android:id="@+id/ratioContainer"
+            android:layout_width="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <EditText
+                android:id="@+id/editTextProgramName"
+                android:background="@drawable/border"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:padding="8dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:hint="Program name: "
+                android:textColorHint="#70FFFFFF"
+                android:inputType="text"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="italic" />
+
+            <EditText
+                android:id="@+id/editTextWorkdaysValue"
+                android:background="@drawable/border"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColorHint="#70FFFFFF"
+                android:ems="10"
+                android:hint="Value Of  Workdays:"
+                android:inputType="number"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:layout_marginTop="10dp"
+                android:background="@drawable/border"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:layout_gravity="start"
+                android:layout_marginStart="10dp"
+                android:gravity="center"
+                android:textStyle="italic|bold"
+                android:text="Check Work Days"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkBoxMonday"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:button="@drawable/custom_checkbox"
+                    android:buttonTint="@color/custom_checkbox_color"
+                    android:layout_gravity="start"
+                    android:text="Monday"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic" />
+
+                <EditText
+                    android:id="@+id/editTextSetValueMonday"
+                    android:textColorHint="#70FFFFFF"
+                    android:background="@drawable/border"
+                    android:layout_width="180dp"
+                    android:gravity="center"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:hint="Exercise Value"
+                    android:inputType="number" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkBoxTuesday"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:button="@drawable/custom_checkbox"
+                    android:buttonTint="@color/custom_checkbox_color"
+                    android:layout_gravity="start"
+                    android:text="Tuesday"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic" />
+
+                <EditText
+                    android:id="@+id/editTextSetValueTuesday"
+                    android:background="@drawable/border"
+                    android:textColorHint="#70FFFFFF"
+                    android:layout_width="180dp"
+                    android:gravity="center"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:hint="Exercise Value"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkBoxWednesday"
+                    android:button="@drawable/custom_checkbox"
+                    android:buttonTint="@color/custom_checkbox_color"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="start"
+                    android:text="Wednesday"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic" />
+
+                <EditText
+                    android:id="@+id/editTextSetValueWednesday"
+                    android:background="@drawable/border"
+                    android:textColorHint="#70FFFFFF"
+                    android:layout_width="180dp"
+                    android:gravity="center"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:hint="Exercise Value"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkBoxThursday"
+                    android:button="@drawable/custom_checkbox"
+                    android:buttonTint="@color/custom_checkbox_color"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="start"
+                    android:text="Thursday"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic" />
+
+                <EditText
+                    android:id="@+id/editTextSetValueThursday"
+                    android:background="@drawable/border"
+                    android:textColorHint="#70FFFFFF"
+                    android:layout_width="180dp"
+                    android:gravity="center"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:hint="Exercise Value"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkBoxFriday"
+                    android:button="@drawable/custom_checkbox"
+                    android:buttonTint="@color/custom_checkbox_color"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="start"
+                    android:text="Friday"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic" />
+
+                <EditText
+                    android:id="@+id/editTextSetValueFriday"
+                    android:background="@drawable/border"
+                    android:layout_width="180dp"
+                    android:textColorHint="#70FFFFFF"
+                    android:gravity="center"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:hint="Exercise Value"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkBoxSaturday"
+                    android:button="@drawable/custom_checkbox"
+                    android:buttonTint="@color/custom_checkbox_color"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="start"
+                    android:text="Saturday"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic" />
+
+                <EditText
+                    android:id="@+id/editTextSetValueSaturday"
+                    android:background="@drawable/border"
+                    android:layout_width="180dp"
+                    android:textColorHint="#70FFFFFF"
+                    android:gravity="center"
+                    android:layout_height="50dp"
+                    android:ems="10"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:hint="Exercise Value"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkBoxSunday"
+                    android:button="@drawable/custom_checkbox"
+                    android:buttonTint="@color/custom_checkbox_color"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_gravity="start"
+                    android:text="Sunday"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic" />
+
+                <EditText
+                    android:id="@+id/editTextSetValueSunday"
+                    android:background="@drawable/border"
+                    android:layout_width="180dp"
+                    android:gravity="center"
+                    android:layout_height="50dp"
+                    android:textColorHint="#70FFFFFF"
+                    android:ems="10"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="italic"
+                    android:hint="Exercise Value"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/buttonContinue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/border"
+                app:backgroundTint="@null"
+                android:text="Continue"
+                android:padding="6dp"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</ScrollView>

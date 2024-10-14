@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "213503861243",
+    "project_id": "caglarkc",
+    "storage_bucket": "caglarkc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:213503861243:android:c52896d247645395726b5e",
+        "android_client_info": {
+          "package_name": "com.example.caglarkc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBTMTVlR4V6FdXdAk4oODJklT7JSXimD6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

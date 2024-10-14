@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/blaze_icon"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/blaze_icon"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CaglarKc">
+        <activity
+            android:name=".CheckDailyProgramActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CheckBodyMeasurementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddBodyMeasurementActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddDailyProgramActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DailyCheckActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddFoodActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FoodListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExerciseDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExerciseListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddExerciseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddExerciseToNewProgramActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CheckProgramsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddNewProgramActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProgramDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FitnessProgramActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserMenuActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

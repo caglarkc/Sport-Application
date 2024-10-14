@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="body_regions">
+
+        <item>Choose Region</item>
+        <item>Chest</item>
+        <item>Back</item>
+        <item>Leg</item>
+        <item>Shoulder</item>
+        <item>Triceps</item>
+        <item>Biceps</item>
+        <item>Abdomen</item>
+
+    </string-array>
+
+
+    <string-array name="gender">
+
+        <item>Choose Gender</item>
+        <item>Men</item>
+        <item>Woman</item>
+
+    </string-array>
+
+    <string-array name="date">
+        <item>Choose Date</item>
+
+
+    </string-array>
+
+
+
+
+
+
+
+</resources>

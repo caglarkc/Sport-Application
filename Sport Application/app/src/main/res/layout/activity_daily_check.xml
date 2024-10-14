@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_background_color"
+    tools:context=".DailyCheckActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center"
+            android:text="Daily Check Menu"
+            android:textColor="@color/light_text_color"
+            android:textSize="20sp"
+            android:textStyle="italic|bold"
+            android:layout_height="wrap_content" />
+
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/menu_button_border"
+            android:gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="50dp"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:src="@drawable/image_view_border"
+                android:background="@drawable/back_muscle_icon"
+                android:layout_height="50dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:id="@+id/buttonAddDailyProgram"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="1dp"
+                android:textSize="18sp"
+                android:background="@android:color/transparent"
+                android:text="Add Daily Program"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:layout_height="50dp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/menu_button_border"
+            android:gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="50dp"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:src="@drawable/image_view_border"
+                android:background="@drawable/back_muscle_icon"
+                android:layout_height="50dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:id="@+id/buttonCheckDailyProgram"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="1dp"
+                android:textSize="18sp"
+                android:background="@android:color/transparent"
+                android:text="Check Daily Program"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:layout_height="50dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/menu_button_border"
+            android:gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="50dp"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:src="@drawable/image_view_border"
+                android:background="@drawable/back_muscle_icon"
+                android:layout_height="50dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:id="@+id/buttonAddBodyMeasurement"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="1dp"
+                android:textSize="18sp"
+                android:background="@android:color/transparent"
+                android:text="Add Body Measurement"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:layout_height="50dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/menu_button_border"
+            android:gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="50dp"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:src="@drawable/image_view_border"
+                android:background="@drawable/back_muscle_icon"
+                android:layout_height="50dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:id="@+id/buttonCheckBodyMeasurement"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="1dp"
+                android:textSize="18sp"
+                android:background="@android:color/transparent"
+                android:text="Check Body Measurement"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:layout_height="50dp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/menu_button_border"
+            android:gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="50dp"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:src="@drawable/image_view_border"
+                android:background="@drawable/back_muscle_icon"
+                android:layout_height="50dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:id="@+id/buttonCheckYourProgress"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="1dp"
+                android:textSize="18sp"
+                android:background="@android:color/transparent"
+                android:text="Check Your Progress"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:layout_height="50dp"/>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/menu_button_border"
+            android:gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="50dp"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:src="@drawable/image_view_border"
+                android:background="@drawable/back_muscle_icon"
+                android:layout_height="50dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:id="@+id/buttonAddDailyEatenFoods"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="1dp"
+                android:textSize="18sp"
+                android:background="@android:color/transparent"
+                android:text="Add Daily Eaten Foods"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:layout_height="50dp"/>
+
+        </LinearLayout>
+
+
+
+
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

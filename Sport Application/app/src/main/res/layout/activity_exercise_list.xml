@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:background="@color/dark_background_color"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".ExerciseListActivity">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:id="@+id/regionFragmentContainer"
+        android:layout_height="wrap_content">
+
+
+
+    </FrameLayout>
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/firstPartContainer"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/textViewCapital"
+            android:text="Exercise List"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:textStyle="italic|bold"
+            android:textSize="22sp"
+            android:gravity="center"
+            android:layout_marginBottom="5dp"
+            android:layout_height="wrap_content"/>
+
+        <RelativeLayout
+            android:id="@+id/capitalContainer"
+            android:layout_width="match_parent"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="245dp"
+                android:textColor="@color/white"
+                android:padding="0dp"
+                android:layout_alignParentStart="true"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:gravity="center"
+                android:textStyle="bold|italic"
+                android:text="Program Name"
+                android:textSize="17sp"
+                android:background="@drawable/under_line_border"
+                android:layout_height="25dp"/>
+
+            <TextView
+                android:layout_width="115dp"
+                android:textColor="@color/white"
+                android:padding="0dp"
+                android:layout_alignParentEnd="true"
+                android:textStyle="bold|italic"
+                android:gravity="center"
+                android:paddingStart="5dp"
+                android:textSize="17sp"
+                android:paddingEnd="5dp"
+                android:text="Region"
+                android:background="@drawable/under_line_border"
+                android:layout_height="25dp"/>
+        </RelativeLayout>
+
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/container"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+
+
+
+            </LinearLayout>
+
+
+        </ScrollView>
+
+
+
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/secondPartContainer"
+            android:layout_alignParentTop="true"
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:id="@+id/buttonContainer"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/buttonAddExercise"
+                    android:layout_width="wrap_content"
+                    app:backgroundTint="@null"
+                    android:text="Add Exercise"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="italic|bold"
+                    android:padding="5dp"
+                    android:background="@drawable/border"
+                    android:layout_height="wrap_content"/>
+
+                <Button
+                    android:layout_gravity="center_horizontal"
+                    android:id="@+id/buttonCheckRegion"
+                    android:layout_width="wrap_content"
+                    app:backgroundTint="@null"
+                    android:text="Check Region"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:textStyle="italic|bold"
+                    android:padding="5dp"
+                    android:background="@drawable/border"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
