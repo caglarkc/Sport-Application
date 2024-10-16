@@ -90,9 +90,10 @@
         <Button
             android:layout_width="wrap_content"
             android:backgroundTint="@null"
-            android:id="@+id/buttonCheckDates"
             android:background="@android:color/transparent"
+            android:id="@+id/buttonCheckDates"
             android:text="Check Dates"
+            android:textColor="@color/white"
             android:textAllCaps="false"
             android:textSize="16sp"
             android:layout_height="wrap_content"

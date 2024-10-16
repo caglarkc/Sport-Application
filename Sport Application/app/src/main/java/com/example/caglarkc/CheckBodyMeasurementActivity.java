@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -48,12 +51,15 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
 
     ImageView imageViewBody;
     FrameLayout frameLayout;
+    LinearLayout dateContainer;
+    Button buttonCheckDates;
     Spinner yearSpinner, monthSpinner, daySpinner;
     ConstraintLayout constraintLayoutParent;
     ProgressBar progressBar;
 
     String sharedUserUid;
     boolean isYearSpinnerInitial = true, isMonthSpinnerInitial = true, isDaySpinnerInitial = true;
+    int twentyDp = 20, twentyPixel;
 
     List<String> dateList = new ArrayList<>();
     ArrayList<String> years = new ArrayList<>();
@@ -80,6 +86,8 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
         yearSpinner = findViewById(R.id.yearSpinner);
         monthSpinner = findViewById(R.id.monthSpinner);
         daySpinner = findViewById(R.id.daySpinner);
+        dateContainer = findViewById(R.id.dateContainer);
+        buttonCheckDates = findViewById(R.id.buttonCheckDates);
 
         sharedUser = getSharedPreferences("user_data",MODE_PRIVATE);
         sharedUserUid = sharedUser.getString("user_uid","");
@@ -87,6 +95,12 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
 
         mReferenceUser = FirebaseDatabase.getInstance().getReference("Users").child(sharedUserUid);
         mReferenceMeasurementData = mReferenceUser.child("user_dailyMeasurementData");
+
+        twentyPixel = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                twentyDp,
+                getResources().getDisplayMetrics()
+        );
 
         progressBar.setVisibility(View.VISIBLE);
         constraintLayoutParent.setVisibility(View.GONE);
@@ -117,11 +131,64 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
 
         createSpinners();
 
-
+        buttonCheckDates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            checkListOfDates();            }
+        });
 
 
 
     }
+
+    private void checkListOfDates() {
+        clearLayout();
+        imageViewBody.setVisibility(View.GONE);
+        dateContainer.setVisibility(View.VISIBLE);
+        LinearLayout linearLayout = new LinearLayout(CheckBodyMeasurementActivity.this);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setGravity(Gravity.CENTER);
+
+
+        for (String date : dateList) {
+            LinearLayout miniLayout = new LinearLayout(CheckBodyMeasurementActivity.this);
+            miniLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            miniLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+            ImageView imageView = new ImageView(CheckBodyMeasurementActivity.this);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(twentyPixel,twentyPixel));
+            imageView.setImageResource(R.drawable.calendar_icon);
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    twentyPixel
+            );
+            layoutParams.bottomMargin = 5;
+            layoutParams.leftMargin = 20;
+            TextView textView = new TextView(CheckBodyMeasurementActivity.this);
+            textView.setLayoutParams(layoutParams);
+            textView.setTextColor(Color.WHITE);
+            textView.setTextSize(16);
+            textView.setGravity(Gravity.CENTER);
+            textView.setPadding(8,2,8,2);
+            textView.setText(date);
+
+            miniLayout.addView(imageView);
+            miniLayout.addView(textView);
+            linearLayout.addView(miniLayout);
+        }
+
+        dateContainer.addView(linearLayout);
+
+    }
+
 
     private void clearLayout() {
     // FrameLayout içindeki tüm alt öğeleri al
@@ -296,6 +363,8 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
                 }
                 // Seçilen yılı al
                 clearLayout();
+                dateContainer.setVisibility(View.GONE);
+                imageViewBody.setVisibility(View.VISIBLE);
                 showSelectedDate();
             }
 
@@ -312,6 +381,8 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
                     return;
                 }
                 clearLayout();
+                dateContainer.setVisibility(View.GONE);
+                imageViewBody.setVisibility(View.VISIBLE);
                 showSelectedDate();
             }
 
@@ -328,6 +399,8 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
                     return;
                 }
                 clearLayout();
+                dateContainer.setVisibility(View.GONE);
+                imageViewBody.setVisibility(View.VISIBLE);
                 showSelectedDate();
             }
 

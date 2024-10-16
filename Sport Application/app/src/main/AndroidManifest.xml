@@ -22,6 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CaglarKc">
         <activity
+            android:name=".AddDailyProgressActivity"
+            android:exported="false" />
+        <activity
             android:name=".CheckDailyProgramActivity"
             android:exported="false" />
         <activity

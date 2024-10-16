@@ -26,6 +26,17 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:id="@+id/dateContainer"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="120dp"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -80,6 +91,20 @@
                 android:paddingEnd="25dp" />
 
         </FrameLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:backgroundTint="@null"
+            android:background="@android:color/transparent"
+            android:id="@+id/buttonCheckDates"
+            android:text="Check Dates"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

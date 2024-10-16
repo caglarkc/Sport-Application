@@ -13,11 +13,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -49,8 +51,8 @@ public class CheckDailyProgramActivity extends AppCompatActivity {
 
     boolean isYearSpinnerInitial = true, isMonthSpinnerInitial = true, isDaySpinnerInitial = true;
     String sharedUserUid;
-    int setWidthDp = 140, spaceWidth = 40, exerciseWidthDp = 140, layoutWidthDp = 240, thirtyDp = 30;
-    int setPixel, spacePixel, exercisePixel, layoutWidthPixel, thirtyPixel;
+    int thirtyDp = 30, twentyDp = 20;
+    int thirtyPixel, twentyPixel;
 
     ArrayList<String> years = new ArrayList<>();
     ArrayList<String> months = new ArrayList<>();
@@ -99,6 +101,7 @@ public class CheckDailyProgramActivity extends AppCompatActivity {
                         public void run() {
                             progressBar.setVisibility(View.GONE);
                             constraintLayoutParent.setVisibility(View.VISIBLE);
+                            buttonCheckDates.setVisibility(View.VISIBLE);
                         }
                     },500);
                 }
@@ -112,28 +115,12 @@ public class CheckDailyProgramActivity extends AppCompatActivity {
 
         createSpinners();
 
-        setPixel = (int) TypedValue.applyDimension(
+        twentyPixel = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
-                setWidthDp,
+                twentyDp,
                 getResources().getDisplayMetrics()
         );
 
-        spacePixel = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                spaceWidth,
-                getResources().getDisplayMetrics()
-        );
-        exercisePixel = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                exerciseWidthDp,
-                getResources().getDisplayMetrics()
-        );
-
-        layoutWidthPixel = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                layoutWidthDp,
-                getResources().getDisplayMetrics()
-        );
 
         thirtyPixel = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
@@ -141,6 +128,12 @@ public class CheckDailyProgramActivity extends AppCompatActivity {
                 getResources().getDisplayMetrics()
         );
 
+        buttonCheckDates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                checkListOfDates();
+            }
+        });
 
     }
 
@@ -382,7 +375,51 @@ public class CheckDailyProgramActivity extends AppCompatActivity {
         return linearLayout;
     }
 
+    private void checkListOfDates() {
+        clearLayout();
+        LinearLayout linearLayout = new LinearLayout(CheckDailyProgramActivity.this);
+        linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        ));
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setGravity(Gravity.CENTER);
 
+
+        for (String date : dateList) {
+            LinearLayout miniLayout = new LinearLayout(CheckDailyProgramActivity.this);
+            miniLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            ));
+            miniLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+            ImageView imageView = new ImageView(CheckDailyProgramActivity.this);
+            imageView.setLayoutParams(new ViewGroup.LayoutParams(twentyPixel,twentyPixel));
+            imageView.setImageResource(R.drawable.calendar_icon);
+
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    twentyPixel
+            );
+            layoutParams.bottomMargin = 5;
+            layoutParams.leftMargin = 20;
+            TextView textView = new TextView(CheckDailyProgramActivity.this);
+            textView.setLayoutParams(layoutParams);
+            textView.setTextColor(Color.WHITE);
+            textView.setTextSize(16);
+            textView.setGravity(Gravity.CENTER);
+            textView.setPadding(8,2,8,2);
+            textView.setText(date);
+
+            miniLayout.addView(imageView);
+            miniLayout.addView(textView);
+            linearLayout.addView(miniLayout);
+        }
+
+        programDetailContainer.addView(linearLayout);
+
+    }
 
     private void createSpinners() {
 

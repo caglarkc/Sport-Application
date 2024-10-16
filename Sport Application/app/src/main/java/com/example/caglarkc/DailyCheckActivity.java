@@ -24,7 +24,8 @@ public class DailyCheckActivity extends AppCompatActivity {
     DatabaseReference mReferenceUser;
     SharedPreferences sharedUser;
 
-    Button buttonAddDailyProgram, buttonCheckDailyProgram, buttonAddBodyMeasurement, buttonCheckBodyMeasurement, buttonCheckYourProgress, buttonAddDailyEatenFoods;
+    Button buttonAddDailyProgram, buttonCheckDailyProgram, buttonAddBodyMeasurement, buttonCheckBodyMeasurement,
+            buttonCheckYourProgress, buttonAddDailyEatenFoods, buttonAddDailyProgress;
 
     String sharedUserUid;
 
@@ -47,6 +48,7 @@ public class DailyCheckActivity extends AppCompatActivity {
         buttonCheckYourProgress = findViewById(R.id.buttonCheckYourProgress);
         buttonAddDailyEatenFoods = findViewById(R.id.buttonAddDailyEatenFoods);
         buttonCheckBodyMeasurement = findViewById(R.id.buttonCheckBodyMeasurement);
+        buttonAddDailyProgress = findViewById(R.id.buttonAddDailyProgress);
 
         sharedUser = getSharedPreferences("user_data",MODE_PRIVATE);
         sharedUserUid = sharedUser.getString("user_uid","");
@@ -69,6 +71,16 @@ public class DailyCheckActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        buttonAddDailyProgress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DailyCheckActivity.this,AddDailyProgressActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
 
         buttonAddBodyMeasurement.setOnClickListener(new View.OnClickListener() {
