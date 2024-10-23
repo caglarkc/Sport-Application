@@ -22,6 +22,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CaglarKc">
         <activity
+            android:name=".CheckDailyEatenFoodsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddDailyEatenFoodsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CheckYourProgressActivity"
+            android:exported="false" />
+        <activity
             android:name=".AddDailyProgressActivity"
             android:exported="false" />
         <activity

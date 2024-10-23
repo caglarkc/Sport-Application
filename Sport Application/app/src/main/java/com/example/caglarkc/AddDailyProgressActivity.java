@@ -1,11 +1,14 @@
 package com.example.caglarkc;
 
+import android.annotation.SuppressLint;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.service.media.MediaBrowserService;
 import android.util.Log;
@@ -15,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -25,6 +29,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -34,6 +39,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +50,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class AddDailyProgressActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
@@ -53,13 +60,15 @@ public class AddDailyProgressActivity extends AppCompatActivity {
     ActivityResultLauncher<Intent> resultLauncher ;
     ImageView imageView; // İlk resmi göstermek için kullanıyoruz
     ArrayList<Uri> imageUris = new ArrayList<>(); // Seçilen resimleri saklamak için liste
-    Uri imageUri;
+    List<Task<?>> uploadTasks = new ArrayList<>(); // Task'leri saklamak için
 
     ImageButton imageButtonAddPhoto;
-    Button buttonSaveImage;
+    Button buttonSaveImage, buttonCancel;
     Spinner yearSpinner, monthSpinner, daySpinner;
+    ConstraintLayout constraintLayoutParent;
+    ProgressBar progressBar;
 
-    String sharedUserUid;
+    String sharedUserUid, selectedDate;
     boolean isYearSpinnerInitial = true, isMonthSpinnerInitial = true, isDaySpinnerInitial = true, isPhotoSelected = false;
 
     ArrayList<String> years = new ArrayList<>();
@@ -75,18 +84,24 @@ public class AddDailyProgressActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        isPhotoSelected = false;
-        sharedUser = getSharedPreferences("user_data",MODE_PRIVATE);
-        sharedUserUid = sharedUser.getString("user_uid","");
-        mReferenceUser = FirebaseDatabase.getInstance().getReference("Users").child(sharedUserUid);
-        mReferenceStorage = FirebaseStorage.getInstance().getReference(sharedUserUid);
-
         yearSpinner = findViewById(R.id.yearSpinner);
         monthSpinner = findViewById(R.id.monthSpinner);
+        progressBar = findViewById(R.id.progressBar);
+        constraintLayoutParent = findViewById(R.id.constraintLayoutParent);
         daySpinner = findViewById(R.id.daySpinner);
         imageButtonAddPhoto = findViewById(R.id.imageButtonAddPhoto);
         imageView = findViewById(R.id.imageView);
         buttonSaveImage = findViewById(R.id.buttonSaveImage);
+        buttonCancel = findViewById(R.id.buttonCancel);
+
+        progressBar.setVisibility(View.GONE);
+        isPhotoSelected = false;
+        sharedUser = getSharedPreferences("user_data",MODE_PRIVATE);
+        sharedUserUid = sharedUser.getString("user_uid","");
+        mReferenceUser = FirebaseDatabase.getInstance().getReference("Users").child(sharedUserUid);
+        mReferenceStorage = FirebaseStorage.getInstance().getReference("Users").child(sharedUserUid);
+
+
 
         createSpinners();
         registerResult();
@@ -101,55 +116,93 @@ public class AddDailyProgressActivity extends AppCompatActivity {
             String selectedMonth = (String) monthSpinner.getSelectedItem();
             String selectedDay = (String) daySpinner.getSelectedItem();
 
-            String selectedDate = selectedDay + "-" + selectedMonth + "-" + selectedYear;
+            selectedDate = selectedDay + "-" + selectedMonth + "-" + selectedYear;
 
-            for (Uri imageUri : imageUris) {
-                String fileName = "image_" + System.currentTimeMillis() + ".jpg";
+            if (!imageUris.isEmpty()) {
+                progressBar.setVisibility(View.VISIBLE);
+                constraintLayoutParent.setVisibility(View.GONE);
+                for (Uri imageUri : imageUris) {
+                    String fileName = "image_" + System.currentTimeMillis() + ".jpg"; // Benzersiz dosya adı
+                    // Geçersiz karakterleri değiştirme (örneğin, '.' yerine '_')
+                    String sanitizedFileName = fileName.replace(".", "_");
+                    StorageReference imageRef = mReferenceStorage.child("images/" + selectedDate + "/" + sanitizedFileName);
 
-                // Geçersiz karakterleri değiştirme (örneğin, '.' yerine '_')
-                String sanitizedFileName = fileName.replace(".", "_");
+                    // Dosya yükleme işlemi başlatılır ve Task döndürülür
+                    Task<UploadTask.TaskSnapshot> uploadTask = imageRef.putFile(imageUri);
 
-                StorageReference imageRef = mReferenceStorage.child("images/" + selectedDate + "/" + sanitizedFileName);
+                    // Task'ı Task listesine ekliyoruz
+                    uploadTasks.add(uploadTask);
 
-                imageRef.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            // İndirme URL'sini al ve Realtime Database'e kaydet
-                            imageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-                                    if (task.isSuccessful()) {
-                                        Uri downloadUrl = task.getResult();
-
-                                        // Geçerli bir path kullanarak URL'yi veritabanına kaydet
-                                        mReferenceUser.child("user_dailyProgressImages").child(sanitizedFileName).setValue(downloadUrl.toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    Intent intent = new Intent(AddDailyProgressActivity.this,DailyCheckActivity.class);
-                                                    startActivity(intent);
-                                                    finish();
-                                                    Toast.makeText(AddDailyProgressActivity.this, "Images and Urls uploaded with successfully...", Toast.LENGTH_SHORT).show();
-                                                }
-                                            }
-                                        });
+                    // Yükleme tamamlandığında indirme URL'sini al ve kaydet
+                    uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                // İndirme URL'sini al ve Firebase Realtime Database'e kaydet
+                                imageRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Uri> task) {
+                                        if (task.isSuccessful()) {
+                                            Uri downloadUrl = task.getResult();
+                                            saveDownloadUrlToDatabase(sanitizedFileName, downloadUrl.toString());
+                                        }
                                     }
+                                });
+                            } else {
+                                Toast.makeText(AddDailyProgressActivity.this, "Yükleme hatası: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+
+                // Tüm Task'ların tamamlanmasını bekleyin
+                Tasks.whenAll(uploadTasks).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+
+                        if (task.isSuccessful()) {
+                            // Tüm yükleme işlemleri başarıyla tamamlandı
+                            Toast.makeText(AddDailyProgressActivity.this, "Tüm resimler başarıyla yüklendi!", Toast.LENGTH_SHORT).show();
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    progressBar.setVisibility(View.GONE);
+                                    constraintLayoutParent.setVisibility(View.VISIBLE);
                                 }
-                            });
+                            },500);
+
+                            // Bir sonraki işleme geçin, örneğin başka bir aktiviteyi başlatın
+                            startActivity(new Intent(AddDailyProgressActivity.this, DailyCheckActivity.class));
+                            finish(); // Aktiviteyi sonlandır
                         } else {
-                            Toast.makeText(AddDailyProgressActivity.this, "Images cant uploaded...", Toast.LENGTH_SHORT).show();
+                            // Tüm Task'ların başarıyla tamamlanmadığı bir durum
+                            Toast.makeText(AddDailyProgressActivity.this, "Bazı yüklemeler başarısız oldu.", Toast.LENGTH_SHORT).show();
                         }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("ERROR", e.getMessage());
-                    }
                 });
+            }else {
+                Toast.makeText(AddDailyProgressActivity.this,"First choose image...",Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!imageUris.isEmpty()) {
+                    imageUris.clear();
+                    Toast.makeText(AddDailyProgressActivity.this,"Canceled...",Toast.LENGTH_SHORT).show();
+                    imageView.setImageDrawable(null);
+                    imageView.setBackgroundResource(R.drawable.profile_photo_icon);
+                }
             }
         });
     }
+
+    // İndirme URL'sini Firebase Realtime Database'e kaydetme
+    private void saveDownloadUrlToDatabase(String fileName, String downloadUrl) {
+        mReferenceUser.child("user_dailyProgressImages").child(selectedDate).child(fileName).setValue(downloadUrl);
+    }
+
 
     // Galeri açan metot
     private void openGallery() {
@@ -164,6 +217,7 @@ public class AddDailyProgressActivity extends AppCompatActivity {
         resultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
+                    @SuppressLint("ResourceAsColor")
                     @Override
                     public void onActivityResult(ActivityResult result) {
                         if (result.getResultCode() == RESULT_OK && result.getData() != null) {
@@ -177,6 +231,8 @@ public class AddDailyProgressActivity extends AppCompatActivity {
 
                                 // İlk resmi ImageView'e yükleyelim (isteğe bağlı)
                                 if (!imageUris.isEmpty()) {
+                                    imageView.setImageDrawable(null);
+                                    imageView.setBackgroundColor(Color.BLACK);
                                     imageView.setImageURI(imageUris.get(0));
                                 }
 

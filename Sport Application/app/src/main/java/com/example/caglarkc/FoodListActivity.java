@@ -2,6 +2,7 @@ package com.example.caglarkc;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -131,6 +132,7 @@ public class FoodListActivity extends AppCompatActivity {
         buttonFoodName.getBackground().setTintList(null);
         buttonFoodName.setBackgroundResource(R.drawable.border);
         buttonFoodName.setTextColor(Color.WHITE);
+        buttonFoodName.setTextSize(16);
         buttonFoodName.setAllCaps(false);
         buttonFoodName.setText(name);
 
@@ -161,6 +163,8 @@ public class FoodListActivity extends AppCompatActivity {
         buttonCalorie.getBackground().setTintList(null);
         buttonCalorie.setBackgroundResource(R.drawable.border);
         buttonCalorie.setTextColor(Color.WHITE);
+        buttonCalorie.setTypeface(null, Typeface.BOLD);
+        buttonCalorie.setTextSize(16);
         buttonCalorie.setAllCaps(false);
         buttonCalorie.setText(calorie);
 
@@ -179,18 +183,22 @@ public class FoodListActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot foodSnapshot : snapshot.getChildren()) {
-                    String foodName = foodSnapshot.getKey();
+                    String cal = "";
+                    String foodName = "";
                     for (DataSnapshot detailSnapshot : foodSnapshot.getChildren()) {
                         String detail = detailSnapshot.getKey();
                         if (detail != null && detail.equals("food_cal")) {
-                            String cal = detailSnapshot.getValue(String.class);
+                            cal = detailSnapshot.getValue(String.class);
                             if (cal != null) {
-                                cal = cal.replace(" / 100gr","");
-                                RelativeLayout relativeLayout = createEntryLayout(foodName,cal);
-                                container.addView(relativeLayout);
+                                cal = cal.replace("/100gr","");
                             }
+                        }else if (detail != null && detail.equals("food_name")) {
+                            foodName = detailSnapshot.getValue(String.class);
+
                         }
                     }
+                    RelativeLayout relativeLayout = createEntryLayout(foodName,cal);
+                    container.addView(relativeLayout);
                 }
             }
 

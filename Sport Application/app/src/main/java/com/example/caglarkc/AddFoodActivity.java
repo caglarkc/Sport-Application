@@ -1,17 +1,21 @@
 package com.example.caglarkc;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.ImageDecoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +23,10 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -30,7 +38,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,22 +53,27 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class AddFoodActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
     DatabaseReference mReferenceFoods;
     StorageReference mReferenceStorage;
 
+    ActivityResultLauncher<Intent> resultLauncher ;
+    Uri imageUri;
+
     EditText editTextFoodName, editTextCarb, editTextFat, editTextProtein, editTextCal;
     Button buttonAddFood;
     ImageButton imageButtonAddFoodImage;
 
-    String sharedUserUid, foodName, strCarbVal, strFatVal, strProteinVal, strCalVal;
-    int carbVal, fatVal, proteinVal, calVal, imageGetRequestCode = 0, imageRequestedCode = 1;;
+    String sharedUserUid, foodName, strCarbVal, strFatVal, strProteinVal, strCalVal, foodUid;
+    int carbVal, fatVal, proteinVal, calVal;
     boolean isImageUploaded = false, isFoodExist = false;
 
-    Bitmap chosenImage;
 
+// GUNLUK FOOD TAKIBI VE GOSTEMRESİ EKLE
+//Foodlara tıklayınca bilgi kısmını yap
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +97,8 @@ public class AddFoodActivity extends AppCompatActivity {
         editTextCal = findViewById(R.id.editTextCal);
         buttonAddFood = findViewById(R.id.buttonAddFood);
         imageButtonAddFoodImage = findViewById(R.id.imageButtonAddFoodImage);
+
+        registerResult();
 
         buttonAddFood.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +136,7 @@ public class AddFoodActivity extends AppCompatActivity {
         imageButtonAddFoodImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                chooseImage();
+                openGallery();
             }
         });
 
@@ -141,21 +158,52 @@ public class AddFoodActivity extends AppCompatActivity {
             calVal = Integer.parseInt(strCalVal);
             if (carbVal < 9999 && fatVal < 9999 && proteinVal < 9999 && calVal < 9999) {
                 if (isImageUploaded) {
+                    foodUid = UUID.randomUUID().toString();
                     HashMap<String, String> mData = new HashMap<>();
-                    mData.put("food_cal", calVal + " / 100gr");
-                    mData.put("food_carb", carbVal + " / 100gr");
-                    mData.put("food_fat", fatVal + " / 100gr");
-                    mData.put("food_protein", proteinVal + " / 100gr");
-                    mReferenceFoods.child(foodName).setValue(mData).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(AddFoodActivity.this,"Food added with successfully...",Toast.LENGTH_SHORT).show();
+                    mData.put("food_name",foodName);
+                    mData.put("food_cal", calVal + "/100gr");
+                    mData.put("food_carb", carbVal + "/100gr");
+                    mData.put("food_fat", fatVal + "/100gr");
+                    mData.put("food_protein", proteinVal + "/100gr");
+
+                    // Firebase Storage'a resim yükleme görevi
+                    // Firebase Storage'a resim yükleme görevi (Task<Void> haline dönüştürme)
+                    Task<Uri> task1 = mReferenceStorage.child("Foods").child(foodUid).putFile(imageUri)
+                            .continueWithTask(task -> {
+                                if (!task.isSuccessful()) {
+                                    throw task.getException(); // Yükleme başarısız olursa hatayı fırlat
+                                }
+                                return mReferenceStorage.child("Foods").child(foodUid).getDownloadUrl(); // İndirme URL'sini al
+                            });
+
+                    // Firebase Realtime Database'e yemek verisini kaydetme ve indirme URL'sini ekleme
+                    task1.continueWithTask(downloadUrlTask -> {
+                        if (!downloadUrlTask.isSuccessful()) {
+                            throw downloadUrlTask.getException(); // Eğer indirme URL'sini alma işlemi başarısız olursa hatayı fırlat
+                        }
+
+                        // İndirme URL'sini al
+                        Uri downloadUri = downloadUrlTask.getResult();
+                        mData.put("food_imageUrl", downloadUri.toString()); // İndirme URL'sini mData'ya ekle
+
+                        // Firebase Realtime Database'e güncellenmiş mData'yı kaydet
+                        return mReferenceFoods.child(foodUid).setValue(mData);
+
+                    }).addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            // Yükleme ve veri kaydetme işlemleri başarıyla tamamlandı
+                            Toast.makeText(getApplicationContext(), "Food and image uploaded successfully...", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(AddFoodActivity.this, FoodListActivity.class);
                             startActivity(intent);
                             finish();
+                        } else {
+                            // Bir veya daha fazla işlem başarısız oldu
+                            Toast.makeText(getApplicationContext(), "Some upload tasks failed...", Toast.LENGTH_SHORT).show();
                         }
+                    }).addOnFailureListener(e -> {
+                        // Bir hata meydana geldi
+                        Log.d("ERROR", e.getMessage());
                     });
-
                 }else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(AddFoodActivity.this);
                     builder.setTitle("Alert");
@@ -163,19 +211,52 @@ public class AddFoodActivity extends AppCompatActivity {
                     builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            imageUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.food_icon);
+                            foodUid = UUID.randomUUID().toString();
                             HashMap<String, String> mData = new HashMap<>();
-                            mData.put("food_cal", calVal + " / 100gr");
-                            mData.put("food_carb", carbVal + " / 100gr");
-                            mData.put("food_fat", fatVal + " / 100gr");
-                            mData.put("food_protein", proteinVal + " / 100gr");
-                            mReferenceFoods.child(foodName).setValue(mData).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Toast.makeText(AddFoodActivity.this,"Food added with successfully...",Toast.LENGTH_SHORT).show();
+                            mData.put("food_name",foodName);
+                            mData.put("food_cal", calVal + "/100gr");
+                            mData.put("food_carb", carbVal + "/100gr");
+                            mData.put("food_fat", fatVal + "/100gr");
+                            mData.put("food_protein", proteinVal + "/100gr");
+
+                            // Firebase Storage'a resim yükleme görevi
+                            // Firebase Storage'a resim yükleme görevi (Task<Void> haline dönüştürme)
+                            Task<Uri> task1 = mReferenceStorage.child("Foods").child(foodUid).putFile(imageUri)
+                                    .continueWithTask(task -> {
+                                        if (!task.isSuccessful()) {
+                                            throw task.getException(); // Yükleme başarısız olursa hatayı fırlat
+                                        }
+                                        return mReferenceStorage.child("Foods").child(foodUid).getDownloadUrl(); // İndirme URL'sini al
+                                    });
+
+                            // Firebase Realtime Database'e yemek verisini kaydetme ve indirme URL'sini ekleme
+                            task1.continueWithTask(downloadUrlTask -> {
+                                if (!downloadUrlTask.isSuccessful()) {
+                                    throw downloadUrlTask.getException(); // Eğer indirme URL'sini alma işlemi başarısız olursa hatayı fırlat
+                                }
+
+                                // İndirme URL'sini al
+                                Uri downloadUri = downloadUrlTask.getResult();
+                                mData.put("food_imageUrl", downloadUri.toString()); // İndirme URL'sini mData'ya ekle
+
+                                // Firebase Realtime Database'e güncellenmiş mData'yı kaydet
+                                return mReferenceFoods.child(foodUid).setValue(mData);
+
+                            }).addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    // Yükleme ve veri kaydetme işlemleri başarıyla tamamlandı
+                                    Toast.makeText(getApplicationContext(), "Food and image uploaded successfully...", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(AddFoodActivity.this, FoodListActivity.class);
                                     startActivity(intent);
                                     finish();
+                                } else {
+                                    // Bir veya daha fazla işlem başarısız oldu
+                                    Toast.makeText(getApplicationContext(), "Some upload tasks failed...", Toast.LENGTH_SHORT).show();
                                 }
+                            }).addOnFailureListener(e -> {
+                                // Bir hata meydana geldi
+                                Log.d("ERROR", e.getMessage());
                             });
                         }
                     });
@@ -205,68 +286,34 @@ public class AddFoodActivity extends AppCompatActivity {
         }
     }
 
-    private void chooseImage(){
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_MEDIA_IMAGES},imageGetRequestCode);
-        }else {
-            Intent getImage = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(getImage,imageRequestedCode);
-        }
+    private void openGallery() {
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, false); // Çoklu seçim izni
+        resultLauncher.launch(intent);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == imageGetRequestCode){
-            if (grantResults.length>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Intent getImage = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(getImage,imageRequestedCode);
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    private void registerResult() {
+        resultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @SuppressLint("ResourceAsColor")
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                            // Seçilen resimleri alma
+                            imageUri = result.getData().getData();
+                            imageButtonAddFoodImage.setImageURI(imageUri);
+                            imageButtonAddFoodImage.setBackgroundResource(R.color.black);
 
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == imageRequestedCode){
-            if (resultCode == RESULT_OK && data != null){
-                Uri imageUri = data.getData();
-
-                try {
-                    ImageDecoder.Source imageSource = ImageDecoder.createSource(this.getContentResolver(), imageUri);
-                    chosenImage = ImageDecoder.decodeBitmap(imageSource);
-                    imageButtonAddFoodImage.setImageBitmap(chosenImage);
-                    uploadImage(imageUri);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
+                            Toast.makeText(AddFoodActivity.this, "Image chosen...", Toast.LENGTH_SHORT).show();
+                            isImageUploaded = true;
+                        } else {
+                            Toast.makeText(AddFoodActivity.this, "Image choosing is canceled...", Toast.LENGTH_SHORT).show();
+                        }
+                    }
                 }
-
-            }
-        }
-        super.onActivityResult(requestCode, resultCode, data);
+        );
     }
 
-    private void uploadImage(Uri imageUri) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        chosenImage.compress(Bitmap.CompressFormat.PNG, 50, outputStream);
-        byte[] willSaveImage =  outputStream.toByteArray();
-        StorageReference storageReference = mReferenceStorage.child("Foods").child(foodName);
-        UploadTask uploadTask = storageReference.putBytes(willSaveImage);
-        uploadTask.addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                saveImageUrlToDatabase(String.valueOf(imageUri));
-                isImageUploaded = true;
-                Toast.makeText(AddFoodActivity.this,"Image is uploaded with successfully...",Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(e -> {
-            Toast.makeText(AddFoodActivity.this,e.getMessage(),Toast.LENGTH_SHORT).show();
-
-        });
-
-    }
-
-    private void saveImageUrlToDatabase(String imageUrl) {
-        mReferenceFoods.child(foodName).child("food_imageUrl").setValue(imageUrl);
-    }
 }

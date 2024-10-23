@@ -42,6 +42,12 @@ import com.google.firebase.database.ValueEventListener;
 // Macro tricker da ekleyeceig zve iyecekleri favoriye ekleme de yapacagım
 
 
+//Günlük random motivasyon sözleri çıkan bir widget ekle
+//Günlük programı gösteren bir widget ekle.
+//ilk tıkladıgında mail ve şifreni isteyip onları kayedeidp bir sonraki tıklamalrında direk giriş yapıp menuyu acan widgetı ekle
+
+
+//Günlük yapılan egzersiz sonucu ykaılan calori hesaplanıp yediig kalori ile hesaplanıp bir hedef belirleyebilir ve ordan takibi ypaılabilcek bi sayfa
 
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth;

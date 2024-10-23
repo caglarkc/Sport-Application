@@ -25,7 +25,7 @@ public class DailyCheckActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
 
     Button buttonAddDailyProgram, buttonCheckDailyProgram, buttonAddBodyMeasurement, buttonCheckBodyMeasurement,
-            buttonCheckYourProgress, buttonAddDailyEatenFoods, buttonAddDailyProgress;
+            buttonCheckYourProgress, buttonAddDailyEatenFoods, buttonAddDailyProgress, buttonCheckDailyEatenFoods;
 
     String sharedUserUid;
 
@@ -45,10 +45,11 @@ public class DailyCheckActivity extends AppCompatActivity {
         buttonAddDailyProgram = findViewById(R.id.buttonAddDailyProgram);
         buttonCheckDailyProgram = findViewById(R.id.buttonCheckDailyProgram);
         buttonAddBodyMeasurement = findViewById(R.id.buttonAddBodyMeasurement);
-        buttonCheckYourProgress = findViewById(R.id.buttonCheckYourProgress);
-        buttonAddDailyEatenFoods = findViewById(R.id.buttonAddDailyEatenFoods);
         buttonCheckBodyMeasurement = findViewById(R.id.buttonCheckBodyMeasurement);
         buttonAddDailyProgress = findViewById(R.id.buttonAddDailyProgress);
+        buttonCheckYourProgress = findViewById(R.id.buttonCheckYourProgress);
+        buttonAddDailyEatenFoods = findViewById(R.id.buttonAddDailyEatenFoods);
+        buttonCheckDailyEatenFoods = findViewById(R.id.buttonCheckDailyEatenFoods);
 
         sharedUser = getSharedPreferences("user_data",MODE_PRIVATE);
         sharedUserUid = sharedUser.getString("user_uid","");
@@ -72,17 +73,6 @@ public class DailyCheckActivity extends AppCompatActivity {
             }
         });
 
-        buttonAddDailyProgress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DailyCheckActivity.this,AddDailyProgressActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-
-
         buttonAddBodyMeasurement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,25 +91,55 @@ public class DailyCheckActivity extends AppCompatActivity {
             }
         });
 
+        buttonAddDailyProgress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DailyCheckActivity.this,AddDailyProgressActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         buttonCheckYourProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DailyCheckActivity.this,UserMenuActivity.class);
+                Intent intent = new Intent(DailyCheckActivity.this,CheckYourProgressActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
-
 
         buttonAddDailyEatenFoods.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DailyCheckActivity.this,UserMenuActivity.class);
+                Intent intent = new Intent(DailyCheckActivity.this,AddDailyEatenFoodsActivity.class);
                 startActivity(intent);
                 finish();
             }
         });
 
+        buttonCheckDailyEatenFoods.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DailyCheckActivity.this,CheckDailyEatenFoodsActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
+
+
+
+
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(DailyCheckActivity.this,UserMenuActivity.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 }

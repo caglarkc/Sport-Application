@@ -92,7 +92,6 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
         sharedUser = getSharedPreferences("user_data",MODE_PRIVATE);
         sharedUserUid = sharedUser.getString("user_uid","");
 
-
         mReferenceUser = FirebaseDatabase.getInstance().getReference("Users").child(sharedUserUid);
         mReferenceMeasurementData = mReferenceUser.child("user_dailyMeasurementData");
 

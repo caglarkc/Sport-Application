@@ -131,7 +131,7 @@ public class ExerciseListActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        layoutParams.bottomMargin = 5;
+        layoutParams.bottomMargin = 8;
 
         RelativeLayout relativeLayout = new RelativeLayout(ExerciseListActivity.this);
         relativeLayout.setLayoutParams(layoutParams);

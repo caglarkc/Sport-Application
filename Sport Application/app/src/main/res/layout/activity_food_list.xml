@@ -49,7 +49,7 @@
                 android:text="Food Name"
                 android:textSize="17sp"
                 android:background="@drawable/under_line_border"
-                android:layout_height="25dp"/>
+                android:layout_height="45dp"/>
 
             <TextView
                 android:layout_width="115dp"
@@ -61,9 +61,9 @@
                 android:paddingStart="5dp"
                 android:textSize="17sp"
                 android:paddingEnd="5dp"
-                android:text="Calorie"
+                android:text="Calorie (100gr)"
                 android:background="@drawable/under_line_border"
-                android:layout_height="25dp"/>
+                android:layout_height="45dp"/>
         </RelativeLayout>
 
 
@@ -121,7 +121,6 @@
                     android:layout_width="wrap_content"
                     app:backgroundTint="@null"
                     android:text="Add Food"
-                    android:layout_marginEnd="20dp"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     android:textStyle="italic|bold"

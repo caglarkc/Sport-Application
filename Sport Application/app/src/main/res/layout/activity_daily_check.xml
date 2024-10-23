@@ -276,6 +276,42 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:background="@drawable/menu_button_border"
+            android:gravity="center_vertical"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:layout_height="60dp">
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="50dp"/>
+
+            <ImageView
+                android:layout_width="50dp"
+                android:src="@drawable/image_view_border"
+                android:background="@drawable/back_muscle_icon"
+                android:layout_height="50dp"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:id="@+id/buttonCheckDailyEatenFoods"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="1dp"
+                android:textSize="18sp"
+                android:background="@android:color/transparent"
+                android:text="Check Daily Eaten Foods"
+                android:textColor="@color/white"
+                android:textAllCaps="false"
+                android:layout_height="50dp"/>
+
+        </LinearLayout>
+
+
 
 
 
