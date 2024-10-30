@@ -28,6 +28,20 @@
 
     </string-array>
 
+    <string-array name="mealtimes">
+        <item>Choose Time</item>
+        <item>Meal 1</item>
+        <item>Meal 2</item>
+        <item>Meal 3</item>
+        <item>Meal 4</item>
+        <item>Meal 5</item>
+        <item>Meal 6</item>
+        <item>Meal 7</item>
+        <item>Meal 8</item>
+        <item>Snack</item>
+
+    </string-array>
+
 
 
 

@@ -61,7 +61,7 @@ public class AddFoodActivity extends AppCompatActivity {
     StorageReference mReferenceStorage;
 
     ActivityResultLauncher<Intent> resultLauncher ;
-    Uri imageUri;
+    Uri imageUri, downloadUri;
 
     EditText editTextFoodName, editTextCarb, editTextFat, editTextProtein, editTextCal;
     Button buttonAddFood;
@@ -183,7 +183,7 @@ public class AddFoodActivity extends AppCompatActivity {
                         }
 
                         // İndirme URL'sini al
-                        Uri downloadUri = downloadUrlTask.getResult();
+                        downloadUri = downloadUrlTask.getResult();
                         mData.put("food_imageUrl", downloadUri.toString()); // İndirme URL'sini mData'ya ekle
 
                         // Firebase Realtime Database'e güncellenmiş mData'yı kaydet
@@ -192,6 +192,7 @@ public class AddFoodActivity extends AppCompatActivity {
                     }).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
                             // Yükleme ve veri kaydetme işlemleri başarıyla tamamlandı
+                            Food food = new Food(foodName,carbVal,fatVal,proteinVal,calVal,downloadUri.toString());
                             Toast.makeText(getApplicationContext(), "Food and image uploaded successfully...", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(AddFoodActivity.this, FoodListActivity.class);
                             startActivity(intent);

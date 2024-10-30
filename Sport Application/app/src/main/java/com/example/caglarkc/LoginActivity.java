@@ -37,7 +37,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-//Daily check kısmına günlük fotograf kilo bilgisi eklleme , günlük vücüt olçusu kol bel olcusu gibi şeyler ekleme
 //Vücut Yağ Yüzdesi (%) = 86.010 × log10(bel çevresi - boyun çevresi) - 70.041 × log10(boy) + 36.76
 // Macro tricker da ekleyeceig zve iyecekleri favoriye ekleme de yapacagım
 

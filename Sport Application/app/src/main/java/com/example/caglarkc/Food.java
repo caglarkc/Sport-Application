@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Food {
-    String name;
+    String name, imageUrl;
     int carbVal, fatVal, proVal, calVal;
-    int image;
-    List<Food> foodList = new ArrayList<>();
+    static List<Food> foodList = new ArrayList<>();
 
-    public Food(String name, int carbVal, int fatVal, int proVal, int calVal, int image) {
+    public Food(String name, int carbVal, int fatVal, int proVal, int calVal, String imageUrl) {
         this.name = name;
         this.carbVal = carbVal;
         this.fatVal = fatVal;
         this.proVal = proVal;
         this.calVal = calVal;
-        this.image = image;
+        this.imageUrl = imageUrl;
 
         foodList.add(this);
     }
+
 
     public String getName() {
         return name;
@@ -40,11 +40,11 @@ public class Food {
         return calVal;
     }
 
-    public int getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public List<Food> getFoodList() {
+    public static List<Food> getFoodList() {
         return foodList;
     }
 }

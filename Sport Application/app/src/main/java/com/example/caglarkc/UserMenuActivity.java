@@ -21,12 +21,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 public class UserMenuActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser mUser;
-    DatabaseReference mReferenceExercises;
+    DatabaseReference mReferenceExercises, mReferenceFoods;
 
     Button buttonFitnessProgram, buttonExerciseList, buttonDailyCheck, buttonDietPlan, buttonFoodList;
+
+    String foodName, foodUrl;
+    int foodCarb, foodFat, foodProtein, foodCal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +79,47 @@ public class UserMenuActivity extends AppCompatActivity {
             }
         });
 
+        Food.getFoodList().clear();
+        mReferenceFoods = FirebaseDatabase.getInstance().getReference("Foods");
+        mReferenceFoods.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot foodSnapshot : snapshot.getChildren()) {
+                    String uid = snapshot.getKey();
+                    for (DataSnapshot detailSnapshot : foodSnapshot.getChildren()) {
+                        String detail = detailSnapshot.getKey();
+                        String x = detailSnapshot.getValue(String.class);
+                        if (detail != null && x != null ) {
+                            if (detail.equals("food_name")) {
+                                foodName = x;
+                            }else if (detail.equals("food_carb")) {
+                                x = x.replace("/100gr","");
+                                foodCarb = Integer.parseInt(x);
+                            }else if (detail.equals("food_fat")) {
+                                x = x.replace("/100gr","");
+                                foodFat = Integer.parseInt(x);
+                            }else if (detail.equals("food_protein")) {
+                                x = x.replace("/100gr","");
+                                foodProtein = Integer.parseInt(x);
+                            }else if (detail.equals("food_cal")) {
+                                x = x.replace("/100gr","");
+                                foodCal = Integer.parseInt(x);
+                            }else if (detail.equals("food_imageUrl")) {
+                                foodUrl = x;
+                            }
+                        }
+                    }
+                    Food food = new Food(foodName, foodCarb, foodFat, foodProtein, foodCal, foodUrl);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+
         buttonFitnessProgram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,7 +150,7 @@ public class UserMenuActivity extends AppCompatActivity {
         buttonDietPlan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(UserMenuActivity.this,UserMenuActivity.class);
+                Intent intent = new Intent(UserMenuActivity.this,DietPlanActivity.class);
                 startActivity(intent);
                 finish();
             }

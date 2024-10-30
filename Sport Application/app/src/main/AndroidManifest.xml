@@ -22,6 +22,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CaglarKc">
         <activity
+            android:name=".CheckDietPlansActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddNewDietPlanActivity"
+            android:exported="false"
+            android:theme="@style/Theme.CaglarKc" />
+        <activity
+            android:name=".DietPlanDetailsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DietPlanActivity"
+            android:exported="false" />
+        <activity
             android:name=".CheckDailyEatenFoodsActivity"
             android:exported="false" />
         <activity

@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_background_color"
+    tools:context=".AddNewDietPlanActivity">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:id="@+id/dayContainer"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="40dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="Choose Day"
+            android:textColor="@color/light_text_color"
+            android:textSize="26sp"
+            android:layout_marginTop="20dp"
+            android:textStyle="italic|bold"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/buttonMonday"
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                app:backgroundTint="@null"
+                android:text="Monday"
+                android:textAllCaps="true"
+                android:textSize="17sp"
+                android:textColor="@color/light_text_color"
+                android:padding="0dp"
+                android:background="@drawable/border"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/buttonTuesday"/>
+
+            <Button
+                android:id="@+id/buttonTuesday"
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                app:backgroundTint="@null"
+                android:text="Tuesday"
+                android:textAllCaps="true"
+                android:textSize="17sp"
+                android:textColor="@color/light_text_color"
+                android:padding="0dp"
+                android:background="@drawable/border"
+                app:layout_constraintTop_toBottomOf="@id/buttonMonday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/buttonWednesday"/>
+
+            <Button
+                android:id="@+id/buttonWednesday"
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                app:backgroundTint="@null"
+                android:text="Wednesday"
+                android:textAllCaps="true"
+                android:textSize="17sp"
+                android:textColor="@color/light_text_color"
+                android:padding="0dp"
+                android:background="@drawable/border"
+                app:layout_constraintTop_toBottomOf="@id/buttonTuesday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/buttonThursday"/>
+
+            <Button
+                android:id="@+id/buttonThursday"
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                app:backgroundTint="@null"
+                android:text="Thursday"
+                android:textAllCaps="true"
+                android:textSize="17sp"
+                android:textColor="@color/light_text_color"
+                android:padding="0dp"
+                android:background="@drawable/border"
+                app:layout_constraintTop_toBottomOf="@id/buttonWednesday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/buttonFriday"/>
+
+            <Button
+                android:id="@+id/buttonFriday"
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                app:backgroundTint="@null"
+                android:text="Friday"
+                android:textAllCaps="true"
+                android:textSize="17sp"
+                android:textColor="@color/light_text_color"
+                android:padding="0dp"
+                android:background="@drawable/border"
+                app:layout_constraintTop_toBottomOf="@id/buttonThursday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/buttonSaturday"/>
+
+            <Button
+                android:id="@+id/buttonSaturday"
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                app:backgroundTint="@null"
+                android:text="Saturday"
+                android:textAllCaps="true"
+                android:textSize="17sp"
+                android:textColor="@color/light_text_color"
+                android:padding="0dp"
+                android:background="@drawable/border"
+                app:layout_constraintTop_toBottomOf="@id/buttonFriday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/buttonSunday"/>
+
+            <Button
+                android:id="@+id/buttonSunday"
+                android:layout_width="130dp"
+                android:layout_height="60dp"
+                app:backgroundTint="@null"
+                android:text="Sunday"
+                android:textAllCaps="true"
+                android:textSize="17sp"
+                android:textColor="@color/light_text_color"
+                android:padding="0dp"
+                android:background="@drawable/border"
+                app:layout_constraintTop_toBottomOf="@id/buttonSaturday"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:id="@+id/fragmentContainer"
+        android:layout_height="match_parent">
+
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
