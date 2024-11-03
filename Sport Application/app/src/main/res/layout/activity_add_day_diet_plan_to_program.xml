@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/dark_background_color"
-    android:layout_height="match_parent">
-
+    tools:context=".AddDayDietPlanToProgramActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,7 +33,7 @@
 
         <ImageButton
             android:layout_width="25dp"
-            android:id="@+id/imageButtonPlus"
+            android:id="@+id/imageButtonPlus1"
             android:layout_marginStart="5dp"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@id/textViewDayName"
@@ -41,10 +43,10 @@
 
         <ImageButton
             android:layout_width="25dp"
-            android:id="@+id/imageButtonRemove"
+            android:id="@+id/imageButtonRemove1"
             android:layout_marginStart="5dp"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/imageButtonPlus"
+            android:layout_toRightOf="@id/imageButtonPlus1"
             android:scaleType="fitCenter"
             android:background="@drawable/remove_icon"
             android:layout_height="25dp" />
@@ -83,6 +85,7 @@
         app:backgroundTint="@null"
         android:paddingStart="8dp"
         android:textAllCaps="true"
+        android:textColor="@color/light_text_color"
         android:paddingEnd="8dp"
         android:textSize="16sp"
         android:text="Save Foods"

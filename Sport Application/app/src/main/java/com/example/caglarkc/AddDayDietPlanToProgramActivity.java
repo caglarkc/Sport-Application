@@ -1,7 +1,7 @@
 package com.example.caglarkc;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -10,7 +10,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -22,21 +21,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.fragment.app.Fragment;
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-public class AddDailyFoodsDietFragment extends Fragment {
-    //en son butun şeyleri ekledim sadece dataları alması ve ekranı kadyetmesi geri geldigine ksımları kaldı
-    SharedPreferences sharedPreferences;
-
-    static final String ARG_DAY = "day";
+public class AddDayDietPlanToProgramActivity extends AppCompatActivity {
 
     TextView textViewDayName;
     ImageButton imageButtonPlus1, imageButtonRemove1;
@@ -52,43 +49,26 @@ public class AddDailyFoodsDietFragment extends Fragment {
     int firstCounter = 0, tenPixel, tenDp = 10;
     HashMap<String , Integer> hashMapSecondCounters = new HashMap<>();
 
-    public static AddDailyFoodsDietFragment newInstance(String day) {
-        AddDailyFoodsDietFragment fragment = new AddDailyFoodsDietFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_DAY, day);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            day = getArguments().getString(ARG_DAY);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_add_day_diet_plan_to_program);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
-        }
-    }
+        Intent intent = getIntent();
+        day = intent.getStringExtra("day");
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_add_daily_foods_diet, container, false);
+        textViewDayName = findViewById(R.id.textViewDayName);
+        imageButtonPlus1 = findViewById(R.id.imageButtonPlus1);
+        imageButtonRemove1 = findViewById(R.id.imageButtonRemove1);
+        dayContainer = findViewById(R.id.dayContainer);
+        buttonSaveFoods = findViewById(R.id.buttonSaveFoods);
 
-        sharedPreferences = getActivity().getSharedPreferences("day_data",Context.MODE_PRIVATE);
-
-        textViewDayName = view.findViewById(R.id.textViewDayName);
-        imageButtonPlus1 = view.findViewById(R.id.imageButtonPlus);
-        imageButtonRemove1 = view.findViewById(R.id.imageButtonRemove);
-        dayContainer = view.findViewById(R.id.dayContainer);
-        buttonSaveFoods = view.findViewById(R.id.buttonSaveFoods);
-
-
-        List<Food> foodList = new ArrayList<>();
-        foodList = Food.getFoodList();
-        foodNameList.add("Choose Food");
-        for (Food food : foodList) {
-            foodNameList.add(food.name);
-        }
 
 
         tenPixel = (int) TypedValue.applyDimension(
@@ -97,9 +77,11 @@ public class AddDailyFoodsDietFragment extends Fragment {
                 getResources().getDisplayMetrics()
         );
 
-
-
-
+        List<Food> foodList = Food.getFoodList();
+        foodNameList.add("Choose Food");
+        for (Food food : foodList) {
+            foodNameList.add(food.name);
+        }
 
         textViewDayName.setText(day);
 
@@ -113,7 +95,7 @@ public class AddDailyFoodsDietFragment extends Fragment {
                             LinearLayout.LayoutParams.WRAP_CONTENT
                     );
                     dinnerContainerParams.bottomMargin = tenPixel * 2;
-                    LinearLayout dinnerContainer = new LinearLayout(getActivity());
+                    LinearLayout dinnerContainer = new LinearLayout(AddDayDietPlanToProgramActivity.this);
                     dinnerContainer.setLayoutParams(dinnerContainerParams);
                     dinnerContainer.setOrientation(LinearLayout.VERTICAL);
                     dinnerContainer.setBackgroundResource(R.drawable.border);
@@ -123,12 +105,12 @@ public class AddDailyFoodsDietFragment extends Fragment {
                             LinearLayout.LayoutParams.WRAP_CONTENT);
                     firstParams.setMargins(tenPixel*3,tenPixel,0,tenPixel);
 
-                    LinearLayout dinnerLine = new LinearLayout(getActivity());
+                    LinearLayout dinnerLine = new LinearLayout(AddDayDietPlanToProgramActivity.this);
                     dinnerLine.setLayoutParams(firstParams);
                     dinnerLine.setOrientation(LinearLayout.HORIZONTAL);
                     dinnerLine.setGravity(Gravity.CENTER_VERTICAL);
 
-                    TextView textViewMeal = new TextView(getActivity());
+                    TextView textViewMeal = new TextView(AddDayDietPlanToProgramActivity.this);
                     textViewMeal.setLayoutParams(new ViewGroup.LayoutParams(tenPixel*8, tenPixel*4));
                     textViewMeal.setTextColor(Color.WHITE);
                     textViewMeal.setGravity(Gravity.CENTER);
@@ -141,11 +123,11 @@ public class AddDailyFoodsDietFragment extends Fragment {
                     LinearLayout.LayoutParams layoutParamsImageButton = new LinearLayout.LayoutParams(tenPixel*2 , tenPixel*2);
                     layoutParamsImageButton.leftMargin = tenPixel;
 
-                    ImageButton imageButtonPlus2 = new ImageButton(getActivity());
+                    ImageButton imageButtonPlus2 = new ImageButton(AddDayDietPlanToProgramActivity.this);
                     imageButtonPlus2.setLayoutParams(layoutParamsImageButton);
                     imageButtonPlus2.setBackgroundResource(R.drawable.plus_icon);
 
-                    ImageButton imageButtonRemove2 = new ImageButton(getActivity());
+                    ImageButton imageButtonRemove2 = new ImageButton(AddDayDietPlanToProgramActivity.this);
                     imageButtonRemove2.setLayoutParams(layoutParamsImageButton);
                     imageButtonRemove2.setBackgroundResource(R.drawable.remove_icon);
 
@@ -165,14 +147,14 @@ public class AddDailyFoodsDietFragment extends Fragment {
                                 );
                                 thirdParams.setMargins(tenPixel*6,0,0,tenPixel);
 
-                                LinearLayout thirdLine = new LinearLayout(getActivity());
+                                LinearLayout thirdLine = new LinearLayout(AddDayDietPlanToProgramActivity.this);
                                 thirdLine.setLayoutParams(thirdParams);
                                 thirdLine.setOrientation(LinearLayout.HORIZONTAL);
                                 thirdLine.setGravity(Gravity.CENTER_VERTICAL);
 
-                                foodAdapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_item, foodNameList);
+                                foodAdapter = new ArrayAdapter<>(AddDayDietPlanToProgramActivity.this, R.layout.spinner_item, foodNameList);
                                 foodAdapter.setDropDownViewResource(R.layout.spinner_item);
-                                Spinner foodSpinner = new Spinner(getActivity());
+                                Spinner foodSpinner = new Spinner(AddDayDietPlanToProgramActivity.this);
                                 foodSpinner.setLayoutParams(new ViewGroup.LayoutParams(tenPixel*12,tenPixel*3));
                                 foodSpinner.setBackgroundResource(R.drawable.border);
                                 foodSpinner.setPadding(8,0,8,0);
@@ -182,7 +164,7 @@ public class AddDailyFoodsDietFragment extends Fragment {
                                 LinearLayout.LayoutParams editTextParams = new LinearLayout.LayoutParams(tenPixel*6,tenPixel*3);
                                 editTextParams.leftMargin = tenPixel*2;
 
-                                EditText editTextGram = new EditText(getActivity());
+                                EditText editTextGram = new EditText(AddDayDietPlanToProgramActivity.this);
                                 editTextGram.setLayoutParams(editTextParams);
                                 editTextGram.setInputType(InputType.TYPE_CLASS_NUMBER);
                                 editTextGram.setTextColor(Color.WHITE);
@@ -311,7 +293,7 @@ public class AddDailyFoodsDietFragment extends Fragment {
                                             } else {
                                                 isSuccessfully = false;
                                                 // Aynı yemek ismi varsa, kullanıcıya uyarı gösterilebilir
-                                                Toast.makeText(getActivity(),"Cant add some food twice...",Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(AddDayDietPlanToProgramActivity.this,"Cant add some food twice...",Toast.LENGTH_SHORT).show();
                                                 hashMapData.clear();
                                                 break;
                                             }
@@ -323,129 +305,100 @@ public class AddDailyFoodsDietFragment extends Fragment {
                         }
                     }
                     // mealDataList artık her öğün için benzersiz yemek adlarını içeriyor
-                    if (isSuccessfully) {
+                    if (isSuccessfully && !hashMapData.isEmpty()) {
                         for (Map.Entry<String , String> entry : hashMapData.entrySet()) {
                             String meal = entry.getKey();
                             String val = entry.getValue();
                             if (hashMapDayData.containsKey(day)) {
                                 String x = hashMapDayData.get(day);
-                                x = x + "+" + meal + "||" + val;
+                                x = x + "=" + meal + ";" + val;
                                 hashMapDayData.put(day, x);
+
+
                             }else {
-                                hashMapDayData.put(day, meal + "||" + val);
+                                String x = meal + ";" + val;
+                                hashMapDayData.put(day, x);
                             }
 
                         }
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                String val = hashMapDayData.get(day);
-                                editor.putString(day,val);
-                                editor.apply();
 
-                            }
-                        },20);
+                        MainMethods.setDayDataHashMap(hashMapDayData);
 
+                        Intent intent = new Intent(AddDayDietPlanToProgramActivity.this,AddNewDietPlanActivity.class);
+                        startActivity(intent);
+                        finish();
 
-                        ((AddNewDietPlanActivity) requireActivity()).successfullyAdded(day);
                         // key: Monday
-                        //value: Meal 1||caglari2,150_Caglariii,250+Meal 2||caglari2,13_Caglariii,23
+                        //value: Meal 1;caglari2,150_Caglariii,250=Meal 2;caglari2,13_Caglariii,23
                         //Buradan kaydetme işlemine devam et
+                    }else {
+                        Toast.makeText(AddDayDietPlanToProgramActivity.this,"You need to add at least one meal and food...",Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
 
-        /*
-                buttonSaveFoods.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (checkAllDataEntered()) {
-                    for (int i = 0 ; i < dayContainer.getChildCount() ; i++) {
-                        View viewChild = dayContainer.getChildAt(i);
-                        //dinnerContainera giriyoruz
-                        if (viewChild instanceof LinearLayout) {
-                            LinearLayout innerContainer = (LinearLayout) viewChild;
-                            String mealName = "";
-                            // dinnercontaineri dolanıyoruz
-                            for (int j = 0; j < innerContainer.getChildCount(); j++) {
-                                View innerView = innerContainer.getChildAt(j);
 
-                                // Eğer innerView bir LinearLayout ise
-                                if (innerView instanceof LinearLayout) {
-                                    LinearLayout thirdline = (LinearLayout) innerView;
+    }
 
-                                    // thirdline içindeki tüm view'ları döngü ile dolaşıyoruz
-                                    for (int k = 0; k < thirdline.getChildCount(); k++) {
-                                        View element = thirdline.getChildAt(k);
+    private boolean checkAllDataEntered() {
+        for (int i = 0; i < dayContainer.getChildCount(); i++) {
+            View viewChild = dayContainer.getChildAt(i);
 
-                                        // Eğer element bir TextView ise (yani "Meal X" gösteriyorsa)
-                                        if (element instanceof TextView) {
-                                            TextView textViewMeal = (TextView) element;
-                                            String mealText = textViewMeal.getText().toString();
+            if (viewChild instanceof LinearLayout) {
+                LinearLayout innerContainer = (LinearLayout) viewChild;
 
-                                            // "Meal" başlığını mealName'e kaydediyoruz
-                                            if (mealText.startsWith("Meal")) {
-                                                mealName = mealText; // Örneğin "Meal 1"
-                                            }
-                                        }
+                boolean hasSpinner = false;
+                boolean hasEditText = false;
 
-                                        // Eğer element bir Spinner ise
-                                        if (element instanceof Spinner) {
-                                            Spinner foodSpinner = (Spinner) element;
-                                            String selectedFood = foodSpinner.getSelectedItem().toString();
+                // innerContainer içindeki tüm view'ları döngü ile dolaşıyoruz
+                for (int j = 0; j < innerContainer.getChildCount(); j++) {
+                    View innerView = innerContainer.getChildAt(j);
 
-                                            // Geçici olarak seçilen yemeği ve gramajı kaydetmek için
-                                            String foodName = selectedFood;
-                                            String gramValue = "";
+                    if (innerView instanceof LinearLayout) {
+                        LinearLayout thirdline = (LinearLayout) innerView;
 
-                                            // Sonraki öğeleri kontrol ediyoruz
-                                            if (k + 1 < thirdline.getChildCount()) {
-                                                View nextElement = thirdline.getChildAt(k + 1);
-                                                if (nextElement instanceof EditText) {
-                                                    EditText editTextGram = (EditText) nextElement;
-                                                    gramValue = editTextGram.getText().toString();
-                                                }
-                                            }
+                        for (int k = 0; k < thirdline.getChildCount(); k++) {
+                            View element = thirdline.getChildAt(k);
 
-                                            // mealName, foodName ve gramValue'yu birleştirip listeye ekliyoruz
-                                            if (!mealName.isEmpty() && !foodName.isEmpty() && !gramValue.isEmpty()) {
-                                                String mealEntry = mealName + "," + foodName + "," + gramValue;
-                                                mealDataList.add(mealEntry);
-                                                Log.d("erebus", mealEntry);
-                                            }
-                                        }
-                                    }
+                            // Eğer element bir Spinner ise
+                            if (element instanceof Spinner) {
+                                hasSpinner = true;
+                                Spinner foodSpinner = (Spinner) element;
+                                String selectedFood = foodSpinner.getSelectedItem().toString();
+                                if (selectedFood.equals("Choose Food") || selectedFood.isEmpty()) {
+                                    Toast.makeText(this, "Please select a food for each meal.", Toast.LENGTH_SHORT).show();
+                                    return false; // Spinner seçilmemişse işlem sonlandırılır
+                                }
+                            }
+
+                            // Eğer element bir EditText ise
+                            if (element instanceof EditText) {
+                                hasEditText = true;
+                                EditText editTextGram = (EditText) element;
+                                String gramValue = editTextGram.getText().toString();
+                                if (gramValue.isEmpty()) {
+                                    Toast.makeText(this, "Please enter the gram value for each food.", Toast.LENGTH_SHORT).show();
+                                    return false; // EditText boşsa işlem sonlandırılır
                                 }
                             }
                         }
                     }
+                }
 
-
+                // Eğer Meal içinde Spinner veya EditText yoksa hata ver
+                if (!hasSpinner || !hasEditText) {
+                    Toast.makeText(this, "Each meal must have at least one food and quantity.", Toast.LENGTH_SHORT).show();
+                    return false; // Boş bir Meal bulundu, işlemi sonlandır
                 }
             }
-        });
+        }
 
-         */
-
-        return view;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        requireActivity().getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                // Fragment'i geri yığından kaldır
-                getParentFragmentManager().popBackStack();
-            }
-        });
+        return true;
     }
 
 
-
+    /*
     private boolean checkAllDataEntered() {
         boolean b = true;
         for (int i = 0 ; i < dayContainer.getChildCount() ; i++) {
@@ -488,8 +441,9 @@ public class AddDailyFoodsDietFragment extends Fragment {
         }
 
         if (!b) {
-            Toast.makeText(getActivity(),"Please enter all data...",Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddDayDietPlanToProgramActivity.this,"Please enter all data...",Toast.LENGTH_SHORT).show();
         }
         return b;
     }
+     */
 }

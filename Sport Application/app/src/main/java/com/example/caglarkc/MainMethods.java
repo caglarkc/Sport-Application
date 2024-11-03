@@ -1,9 +1,17 @@
 package com.example.caglarkc;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 
 public class MainMethods {
+    static HashMap<String , String> dayDataHashMap = new HashMap<>();
+    static Boolean dietPlanChoose;
+    static String lastAddedDay;
+
     public static boolean isPasswordStrongEnough(String password){
         if (password.length()<8){
             return false;
@@ -39,5 +47,29 @@ public class MainMethods {
             return null;
         }
     }
+
+    public static void setDayDataHashMap(HashMap<String , String> hashMap) {
+        if (dayDataHashMap != null) {
+            dayDataHashMap.putAll(hashMap);
+        }else {
+            dayDataHashMap = hashMap;
+        }
+
+    }
+
+    public static HashMap<String , String> returnDayDataHashMap() {
+
+        return dayDataHashMap;
+    }
+
+    public static Boolean getDietPlanChoose() {
+        return dietPlanChoose;
+    }
+
+    public static void setDietPlanChoose(Boolean choose) {
+        dietPlanChoose = choose;
+    }
+
+
 
 }

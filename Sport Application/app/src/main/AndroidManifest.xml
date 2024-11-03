@@ -22,6 +22,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CaglarKc">
         <activity
+            android:name=".AddDayDietPlanToProgramActivity"
+            android:exported="false" />
+        <activity
             android:name=".CheckDietPlansActivity"
             android:exported="false" />
         <activity
