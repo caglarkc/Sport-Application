@@ -29,6 +29,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+/**
+ * CheckProgramsActivity: This activity allows users to browse and select available fitness programs.
+ * Programs are displayed with their respective names and workday values in a list format.
+ * Users can choose to view details of a selected program or make it their current program.
+ * The activity highlights the user's current program with a distinct border for easy identification.
+ * Upon selecting a program, users can choose to check its details or set it as their current program.
+ */
 
 public class CheckProgramsActivity extends AppCompatActivity {
     DatabaseReference mReferencePrograms, mReferenceUser;

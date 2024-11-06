@@ -31,6 +31,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+/**
+ * ProgramDetailsActivity: Displays detailed information about a selected fitness program.
+ * - Retrieves program details, including exercises for each day and the creator’s information.
+ * - Displays program structure by day, listing exercises with their sets or repetitions.
+ * - Allows navigation back to the previous screen specified by the intent, either FitnessProgramActivity or CheckProgramsActivity.
+ * - The UI dynamically generates exercise information based on the program structure.
+ */
 
 public class ProgramDetailsActivity extends AppCompatActivity {
     DatabaseReference mReferenceProgram, mReferenceUser;

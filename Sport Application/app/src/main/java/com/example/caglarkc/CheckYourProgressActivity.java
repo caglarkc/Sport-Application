@@ -46,6 +46,13 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * CheckYourProgressActivity: This activity allows users to view and manage their daily progress images for selected dates.
+ * Users can select a year, month, and day to retrieve and display images associated with that date.
+ * The activity also provides options to delete images from Firebase Storage and Firebase Realtime Database.
+ * Spinners are used for date selection, and images are displayed in a clickable grid.
+ * Users can delete images by clicking on them and confirming the deletion in a dialog.
+ */
 
 public class CheckYourProgressActivity extends AppCompatActivity {
     SharedPreferences sharedUser;

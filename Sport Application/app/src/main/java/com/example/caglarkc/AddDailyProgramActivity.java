@@ -54,6 +54,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * AddDailyProgramActivity is designed to allow users to create, view, and manage daily workout programs.
+ * Users can set specific exercises, repetitions, and weights for different days of the week and store this data.
+ * The activity supports:
+ * - Displaying the current date and day of the week.
+ * - Adding workout plans for specific dates and days.
+ * - Saving workout data (exercises, sets, repetitions, weights) to Firebase Realtime Database.
+ * - Dynamic creation of UI components based on user input and chosen workout days.
+ */
+
 public class AddDailyProgramActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
     DatabaseReference mReferenceUser, mReferenceProgram, mReferenceData;

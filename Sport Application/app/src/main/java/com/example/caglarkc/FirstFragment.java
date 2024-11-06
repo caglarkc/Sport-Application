@@ -10,6 +10,12 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.caglarkc.databinding.FragmentFirstBinding;
+/**
+ * FirstFragment: This fragment represents the initial screen in a navigation flow.
+ * - It displays a button that, when clicked, navigates to the SecondFragment.
+ * - Uses View Binding for efficient access to views in the layout.
+ * - Ensures that the binding is cleared when the view is destroyed to prevent memory leaks.
+ */
 
 public class FirstFragment extends Fragment {
 

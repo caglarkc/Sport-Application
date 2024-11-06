@@ -52,6 +52,16 @@ import com.google.firebase.storage.UploadTask;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * AddDailyProgressActivity allows users to select and upload images for daily progress tracking.
+ * This activity provides functionality for:
+ * - Selecting multiple images from the gallery and displaying the first selected image.
+ * - Saving images with unique filenames to Firebase Storage.
+ * - Saving image download URLs to Firebase Realtime Database under a specific date.
+ * - Setting the date for images through year, month, and day spinners.
+ * - Handling image selection and upload progress with a progress bar and feedback messages.
+ */
+
 public class AddDailyProgressActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
     DatabaseReference mReferenceUser;

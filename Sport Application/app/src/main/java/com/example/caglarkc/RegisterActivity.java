@@ -24,6 +24,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+/**
+ * RegisterActivity: Manages user registration process, including navigation and authentication.
+ * - Initiates user registration with email, password, and username collection through fragments.
+ * - Uses Firebase Authentication for account creation and Firebase Realtime Database to store user details.
+ * - Validates and hashes passwords before storage, providing feedback on success or failure.
+ * - Navigates to LoginActivity upon successful registration.
+ */
 
 public class RegisterActivity extends AppCompatActivity {
     FirebaseAuth mAuth;

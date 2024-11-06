@@ -19,7 +19,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
+/**
+ * DailyCheckActivity: This activity provides users with daily tracking options to manage and monitor their fitness and health goals.
+ * The available actions include:
+ * 1. Adding and viewing daily fitness programs.
+ * 2. Adding and viewing body measurements.
+ * 3. Adding and viewing daily progress.
+ * 4. Adding and viewing daily eaten foods.
+ * Each button directs the user to the respective activity for tracking their daily routines and measurements.
+ */
 public class DailyCheckActivity extends AppCompatActivity {
     DatabaseReference mReferenceUser;
     SharedPreferences sharedUser;

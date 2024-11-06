@@ -40,6 +40,11 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * CheckDailyEatenFoodsActivity: This activity allows users to view their food intake records by selecting a specific date.
+ * Users can choose a year, month, and day from spinners to display a list of foods consumed on that date, grouped by meal times.
+ * The activity retrieves and displays the food name and gram amount for each entry from the Firebase database.
+ */
 public class CheckDailyEatenFoodsActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
     DatabaseReference mReferenceUser, mReferenceFoods;
@@ -109,6 +114,7 @@ public class CheckDailyEatenFoodsActivity extends AppCompatActivity {
                     public void run() {
                         constraintLayoutParent.setVisibility(View.VISIBLE);
                         progressBar.setVisibility(View.GONE);
+
                     }
                 },500);
             }

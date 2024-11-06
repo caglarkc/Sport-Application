@@ -42,6 +42,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * AddDailyEatenFoodsActivity is responsible for allowing users to record their daily food intake.
+ * The user can add multiple food items, specify their meal times, and input the food quantities in grams.
+ * This activity includes:
+ * - A dynamic list for adding multiple food items.
+ * - Spinners for selecting food items and meal times.
+ * - Buttons to add new food items, delete the last entry, and save all entries.
+ * - Firebase Realtime Database integration for saving the data under each meal time for the current date.
+ */
+
 public class AddDailyEatenFoodsActivity extends AppCompatActivity {
     DatabaseReference mReferenceFoods, mReferenceUser;
     SharedPreferences sharedUser;
@@ -97,6 +107,7 @@ public class AddDailyEatenFoodsActivity extends AppCompatActivity {
                 thirtyDp,
                 getResources().getDisplayMetrics()
         );
+
         hintColor = getColor(R.color.hint_color);
         date = getCurrentDateTime();
 
@@ -107,46 +118,64 @@ public class AddDailyEatenFoodsActivity extends AppCompatActivity {
         mealTimesList = Arrays.asList(mealTimesArray);
 
         //Spinnera foodlara resimleri ekle başına spinnner dogru calısıyor item_food a ekle
+
         buttonAddNewFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // RelativeLayout oluştur
-                RelativeLayout relativeLayout = new RelativeLayout(AddDailyEatenFoodsActivity.this);
+                ConstraintLayout constraintLayout = new ConstraintLayout(AddDailyEatenFoodsActivity.this);
 
-                // LayoutParams oluştur ve top margin ekle
-                RelativeLayout.LayoutParams relativeLayoutParams = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT, // Tüm genişliği kaplayacak
-                        ViewGroup.LayoutParams.WRAP_CONTENT // Yükseklik içeriğe göre ayarlanacak
+                ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
                 );
-                relativeLayoutParams.setMargins(0, 10, 0, 0); // Sadece üstten 10dp margin ekledik
-
-                // RelativeLayout'a layout parametrelerini uygula
-                relativeLayout.setLayoutParams(relativeLayoutParams);
-
+                layoutParams.setMargins(0, thirtyPixel/3, 0, 0);
+                constraintLayout.setLayoutParams(layoutParams);
 
                 // foodSpinner oluştur ve sola hizala
                 foodAdapter = new ArrayAdapter<>(AddDailyEatenFoodsActivity.this, R.layout.spinner_item, foodNameList);
                 foodAdapter.setDropDownViewResource(R.layout.spinner_item);
                 foodSpinner = new Spinner(AddDailyEatenFoodsActivity.this);
-                RelativeLayout.LayoutParams foodSpinnerParams = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
+                foodSpinner.setId(View.generateViewId()); // Benzersiz ID oluştur
+                ConstraintLayout.LayoutParams foodSpinnerParams = new ConstraintLayout.LayoutParams(
+                        thirtyPixel*6,
                         thirtyPixel
                 );
-                foodSpinnerParams.addRule(RelativeLayout.ALIGN_PARENT_START); // Sola hizala
+                foodSpinnerParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+                foodSpinnerParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
                 foodSpinner.setLayoutParams(foodSpinnerParams);
                 foodSpinner.setBackgroundTintList(null);
                 foodSpinner.setBackgroundResource(R.drawable.border);
-                foodSpinner.setPadding(8,0,8,0);
+                foodSpinner.setPadding(8, 0, 8, 0);
                 foodSpinner.setAdapter(foodAdapter);
 
-                // EditText oluştur ve ortada hizala
-                EditText editText = new EditText(AddDailyEatenFoodsActivity.this);
-                editText.setId(View.generateViewId());
-                RelativeLayout.LayoutParams editTextParams = new RelativeLayout.LayoutParams(
-                        seventyPixel, // Genişlik sabit olarak belirlenen 70 pixel
+                // mealTimeSpinner oluştur ve sağa hizala
+                mealTimeAdapter = new ArrayAdapter<>(AddDailyEatenFoodsActivity.this, R.layout.spinner_item, mealTimesList);
+                mealTimeAdapter.setDropDownViewResource(R.layout.spinner_item);
+                mealTimeSpinner = new Spinner(AddDailyEatenFoodsActivity.this);
+                mealTimeSpinner.setId(View.generateViewId()); // Benzersiz ID oluştur
+                ConstraintLayout.LayoutParams mealTimeSpinnerParams = new ConstraintLayout.LayoutParams(
+                        thirtyPixel*4,
                         thirtyPixel
                 );
-                editTextParams.addRule(RelativeLayout.CENTER_IN_PARENT); // Ortaya hizala
+                mealTimeSpinnerParams.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+                mealTimeSpinnerParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+                mealTimeSpinner.setLayoutParams(mealTimeSpinnerParams);
+                mealTimeSpinner.setBackgroundTintList(null);
+                mealTimeSpinner.setBackgroundResource(R.drawable.border);
+                mealTimeSpinner.setPadding(8, 0, 8, 0);
+                mealTimeSpinner.setAdapter(mealTimeAdapter);
+
+                // EditText oluştur ve iki Spinner'ın ortasına hizala
+                EditText editText = new EditText(AddDailyEatenFoodsActivity.this);
+                ConstraintLayout.LayoutParams editTextParams = new ConstraintLayout.LayoutParams(
+                        seventyPixel,
+                        thirtyPixel
+                );
+                editTextParams.startToEnd = foodSpinner.getId();
+                editTextParams.endToStart = mealTimeSpinner.getId();
+                editTextParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+                editTextParams.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
                 editText.setLayoutParams(editTextParams);
                 editText.setGravity(Gravity.CENTER);
                 editText.setHintTextColor(hintColor);
@@ -156,30 +185,16 @@ public class AddDailyEatenFoodsActivity extends AppCompatActivity {
                 editText.setInputType(InputType.TYPE_CLASS_NUMBER);
                 editText.setBackgroundResource(R.drawable.under_line_border);
 
-                // mealTimeSpinner oluştur ve sağa hizala
-                mealTimeAdapter = new ArrayAdapter<>(AddDailyEatenFoodsActivity.this, R.layout.spinner_item, mealTimesList);
-                mealTimeAdapter.setDropDownViewResource(R.layout.spinner_item);
-                mealTimeSpinner = new Spinner(AddDailyEatenFoodsActivity.this);
-                RelativeLayout.LayoutParams mealTimeSpinnerParams = new RelativeLayout.LayoutParams(
-                        ViewGroup.LayoutParams.WRAP_CONTENT,
-                        thirtyPixel
-                );
-                mealTimeSpinnerParams.addRule(RelativeLayout.ALIGN_PARENT_END); // Sağa hizala
-                mealTimeSpinner.setLayoutParams(mealTimeSpinnerParams);
-                mealTimeSpinner.setBackgroundTintList(null);
-                mealTimeSpinner.setBackgroundResource(R.drawable.border);
-                mealTimeSpinner.setPadding(8,0,8,0);
-                mealTimeSpinner.setAdapter(mealTimeAdapter);
-
-                // RelativeLayout'a view'leri ekle
-                relativeLayout.addView(foodSpinner);
-                relativeLayout.addView(editText);
-                relativeLayout.addView(mealTimeSpinner);
+                // constraintLayout'a view'leri ekle
+                constraintLayout.addView(foodSpinner);
+                constraintLayout.addView(editText);
+                constraintLayout.addView(mealTimeSpinner);
 
                 // Container'a RelativeLayout'u ekle
-                container.addView(relativeLayout);
+                container.addView(constraintLayout);
             }
         });
+
 
         buttonDeleteLastFood.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,13 +217,13 @@ public class AddDailyEatenFoodsActivity extends AppCompatActivity {
                     for (int i = 0; i < container.getChildCount(); i++) {
                         View child = container.getChildAt(i);
 
-                        if (child instanceof RelativeLayout) {
+                        if (child instanceof ConstraintLayout) {
                             // RelativeLayout içindeki bileşenleri bul
-                            RelativeLayout relativeLayout = (RelativeLayout) child;
+                            ConstraintLayout constraintLayout = (ConstraintLayout) child;
 
-                            Spinner foodSpinner = (Spinner) relativeLayout.getChildAt(0);
-                            EditText gramEditText = (EditText) relativeLayout.getChildAt(1);
-                            Spinner timeSpinner = (Spinner) relativeLayout.getChildAt(2);
+                            Spinner foodSpinner = (Spinner) constraintLayout.getChildAt(0);
+                            EditText gramEditText = (EditText) constraintLayout.getChildAt(1);
+                            Spinner timeSpinner = (Spinner) constraintLayout.getChildAt(2);
 
                             // Spinner'lardan seçilen değerleri al
                             String selectedFood = foodSpinner.getSelectedItem().toString();
@@ -216,10 +231,13 @@ public class AddDailyEatenFoodsActivity extends AppCompatActivity {
                             String gramValue = gramEditText.getText().toString();
                             gramValue = gramValue + "gr";
 
+                            Log.d("erebus",selectedFood);
+                            Log.d("erebus",selectedTime);
+                            Log.d("erebus",gramValue);
                             // Eğer Spinner'larda "choose" seçili değilse ve EditText boş değilse kaydet
                             if (!selectedFood.equals("Choose Food") && !selectedTime.equals("Choose Time") && !TextUtils.isEmpty(gramValue)) {
                                 mReferenceUser.child("user_dailyEatenFoodsData").child(date).child(selectedTime).child(selectedFood).setValue(gramValue);
-
+                                Toast.makeText(AddDailyEatenFoodsActivity.this, "hi", Toast.LENGTH_SHORT).show();
                                 // Ya da veritabanına kaydedebilirsin
                             } else {
                                 // Eğer validasyon başarısızsa hata mesajı göster

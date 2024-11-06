@@ -19,6 +19,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+/**
+ * FitnessProgramActivity: This activity allows users to view, add, or check available fitness programs.
+ * - Users can view the details of their current fitness program if they have one selected.
+ * - If the program limit (5 programs) is reached, users are notified and cannot add new programs.
+ * - Users can navigate to view the list of available programs for selection.
+ * The activity interacts with Firebase to retrieve user-specific data, such as the current program and
+ * any previously added programs, and updates the UI based on the user's program status.
+ */
 
 public class FitnessProgramActivity extends AppCompatActivity {
     DatabaseReference mReferenceUser;

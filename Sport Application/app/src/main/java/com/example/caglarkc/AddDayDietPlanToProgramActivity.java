@@ -33,6 +33,16 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * AddDayDietPlanToProgramActivity allows users to create and manage a daily diet plan for a specific day of the week.
+ * Users can:
+ * - Add multiple meals, each with multiple food items and quantity in grams.
+ * - Remove meals or individual food items within meals.
+ * - Ensure unique food items are added per meal to prevent duplicates.
+ * - Save the diet plan for the selected day, which integrates into a weekly program.
+ * The data is validated to ensure all required fields are filled before saving.
+ */
+
 public class AddDayDietPlanToProgramActivity extends AppCompatActivity {
 
     TextView textViewDayName;
@@ -328,9 +338,6 @@ public class AddDayDietPlanToProgramActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
 
-                        // key: Monday
-                        //value: Meal 1;caglari2,150_Caglariii,250=Meal 2;caglari2,13_Caglariii,23
-                        //Buradan kaydetme işlemine devam et
                     }else {
                         Toast.makeText(AddDayDietPlanToProgramActivity.this,"You need to add at least one meal and food...",Toast.LENGTH_SHORT).show();
                     }
@@ -398,52 +405,4 @@ public class AddDayDietPlanToProgramActivity extends AppCompatActivity {
     }
 
 
-    /*
-    private boolean checkAllDataEntered() {
-        boolean b = true;
-        for (int i = 0 ; i < dayContainer.getChildCount() ; i++) {
-            View viewChild = dayContainer.getChildAt(i);
-            if (viewChild instanceof LinearLayout) {
-                LinearLayout innerContainer = (LinearLayout) viewChild;
-                // innerContainer içindeki tüm view'ları döngü ile dolaşıyoruz
-                for (int j = 0; j < innerContainer.getChildCount(); j++) {
-                    View innerView = innerContainer.getChildAt(j);
-
-                    // Eğer innerView bir LinearLayout ise
-                    if (innerView instanceof LinearLayout) {
-                        LinearLayout thirdline = (LinearLayout) innerView;
-
-                        // thirdline içindeki tüm view'ları döngü ile dolaşıyoruz
-                        for (int k = 0; k < thirdline.getChildCount(); k++) {
-                            View element = thirdline.getChildAt(k);
-
-                            // Eğer element bir Spinner ise
-                            if (element instanceof Spinner) {
-                                Spinner foodSpinner = (Spinner) element;
-                                String selectedFood = foodSpinner.getSelectedItem().toString();
-                                if (selectedFood.equals("Choose Food") || selectedFood.isEmpty()) {
-                                    b = false;
-                                }
-                            }
-
-                            // Eğer element bir EditText ise
-                            if (element instanceof EditText) {
-                                EditText editTextGram = (EditText) element;
-                                String gramValue = editTextGram.getText().toString();
-                                if (gramValue.isEmpty()) {
-                                    b = false;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!b) {
-            Toast.makeText(AddDayDietPlanToProgramActivity.this,"Please enter all data...",Toast.LENGTH_SHORT).show();
-        }
-        return b;
-    }
-     */
 }

@@ -39,6 +39,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+/**
+ * AddExerciseToNewProgramActivity: This activity allows users to create a new workout program by adding exercises to each day.
+ * Users select exercises from a predefined list for each day, specify the number of sets, and save the program.
+ */
 
 public class AddExerciseToNewProgramActivity extends AppCompatActivity {
     SharedPreferences sharedUser, sharedProgram;

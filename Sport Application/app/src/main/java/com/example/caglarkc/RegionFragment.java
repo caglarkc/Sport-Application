@@ -1,6 +1,5 @@
 package com.example.caglarkc;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -21,6 +20,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+/**
+ * RegionFragment: Displays exercises for a selected muscle region.
+ * - Retrieves and displays exercises based on the selected region passed via arguments.
+ * - Each exercise is shown as a clickable button, which allows navigation back to the exercise list with details of the selected exercise.
+ * - Layout adjustments ensure proper alignment and spacing for different screen sizes.
+ */
 
 
 public class RegionFragment extends Fragment {

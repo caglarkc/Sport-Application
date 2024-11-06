@@ -9,6 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+/**
+ * ExerciseAdapter: A custom adapter for displaying a list of exercises in a ListView or GridView.
+ * It provides the exercise name and image for each item in the list.
+ * When the exercise name is "Choose Exercise", the image visibility is set to invisible to highlight it as a placeholder.
+ * This adapter inflates the `item_exercise` layout for each item in the list.
+ */
 
 public class ExerciseAdapter extends BaseAdapter {
     private Context context;

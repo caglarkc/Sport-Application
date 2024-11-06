@@ -37,9 +37,21 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+ /**
+ * LoginActivity: Provides user authentication functionality, including login, registration redirection, and password visibility toggle.
+ * - Firebase Authentication is used to validate user credentials.
+ * - UI adjustments are made based on input, including button style changes and password visibility toggle.
+ * - Contains a pre-filled login option for easy testing.
+ * - Utilizes SharedPreferences to store user data locally upon successful login.
+ */
+
+
 //Vücut Yağ Yüzdesi (%) = 86.010 × log10(bel çevresi - boyun çevresi) - 70.041 × log10(boy) + 36.76
 // Macro tricker da ekleyeceig zve iyecekleri favoriye ekleme de yapacagım
 
+//Optimizasyon için her seferinde exercise ve foodları almasın usermenuactivty de,ilk açıldıgında ve yeni datalar eklendiginde direk nesneye
+// eklesin tekrar tekrar menuye dondukce firebaseden data çekmesin
 
 //Günlük random motivasyon sözleri çıkan bir widget ekle
 //Günlük programı gösteren bir widget ekle.
@@ -48,6 +60,8 @@ import com.google.firebase.database.ValueEventListener;
 
 //Günlük yapılan egzersiz sonucu ykaılan calori hesaplanıp yediig kalori ile hesaplanıp bir hedef belirleyebilir ve ordan takibi ypaılabilcek bi sayfa
 
+
+//Yeni diet programı ekledim şimdi bunları listeleyen ve tıkladıgımda verileri gosteren activtiy ve ondna sonra da diet prgoramı seçme ve değiştirme işlemlerini ekle
 public class LoginActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser mUser;

@@ -50,6 +50,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * AddBodyMeasurementActivity is responsible for providing a user interface to add and save body measurements
+ * for various body parts. The user can select different body regions on an image to add measurements
+ * and choose a date for the measurements. The activity allows users to:
+ * - Input weight and height.
+ * - Select a date and validate it.
+ * - Choose between inches or centimeters for measurements.
+ * - Save measurements to Firebase Realtime Database.
+ * - Delete the last entered measurement.
+ */
+
 public class AddBodyMeasurementActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
     DatabaseReference mReferenceUserMeasurement;
@@ -308,63 +319,63 @@ public class AddBodyMeasurementActivity extends AppCompatActivity {
                     float y = motionEvent.getY();
 
 
-                    if (x < 825 && y < 455 && x > 794 && y > 424) {
+                    if (x < 830 && y < 460 && x > 789 && y > 419) {
                         // shoulder
                         if (!isShoulder) {
                             currentEditText = createEditText(810, 440, "shoulder");
                             isShoulder = true;
                         }
 
-                    } else if (x < 651 && y < 380 && x > 620 && y > 349) {
+                    } else if (x < 656 && y < 385 && x > 615 && y > 344) {
                         // chest
                         if (!isNeck) {
                             currentEditText = createEditText(636, 365, "neck");
                             isNeck = true;
                         }
 
-                    }else if (x < 696 && y < 537 && x > 665 && y > 506) {
+                    } else if (x < 701 && y < 542 && x > 660 && y > 501) {
                         // chest
                         if (!isChest) {
                             currentEditText = createEditText(681, 522, "chest");
                             isChest = true;
                         }
 
-                    } else if (x < 849 && y < 675 && x > 818 && y > 644) {
+                    } else if (x < 854 && y < 680 && x > 813 && y > 639) {
                         // arm
                         if (!isArm) {
                             currentEditText = createEditText(834, 660, "arm");
                             isArm = true;
                         }
 
-                    } else if (x < 956 && y < 869 && x > 925 && y > 838) {
+                    } else if (x < 961 && y < 874 && x > 920 && y > 833) {
                         // forearm
                         if (!isForearm) {
                             currentEditText = createEditText(941, 854, "forearm");
                             isForearm = true;
                         }
 
-                    } else if (x < 629 && y < 833 && x > 598 && y > 802) {
+                    } else if (x < 634 && y < 838 && x > 593 && y > 797) {
                         // abdomen
                         if (!isAbdomen) {
                             currentEditText = createEditText(614, 818, "abdomen");
                             isAbdomen = true;
                         }
 
-                    } else if (x < 761 && y < 1008 && x > 730 && y > 977) {
+                    } else if (x < 766 && y < 1013 && x > 725 && y > 972) {
                         // hip
                         if (!isHip) {
                             currentEditText = createEditText(746, 993, "hip");
                             isHip = true;
                         }
 
-                    } else if (x < 696 && y < 1204 && x > 665 && y > 1173) {
+                    } else if (x < 701 && y < 1209 && x > 660 && y > 1168) {
                         // quad
                         if (!isQuad) {
                             currentEditText = createEditText(681, 1189, "quad");
                             isQuad = true;
                         }
 
-                    } else if (x < 776 && y < 1646 && x > 745 && y > 1615) {
+                    } else if (x < 781 && y < 1651 && x > 740 && y > 1610) {
                         // calf
                         if (!isCalf) {
                             currentEditText = createEditText(761, 1631, "calf");

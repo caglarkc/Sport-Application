@@ -2,6 +2,12 @@ package com.example.caglarkc;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * Region: Represents a specific body region with a name and associated icon.
+ * - Based on the region name, a specific image resource is assigned.
+ * - Holds a static list of all Region instances created.
+ * - Includes methods to get and set the name and image of the region, as well as retrieve the full list of regions.
+ */
 
 public class Region {
     private String name;

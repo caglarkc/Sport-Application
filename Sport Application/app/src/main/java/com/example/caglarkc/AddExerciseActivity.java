@@ -26,6 +26,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * AddExerciseActivity: This activity allows users to add new exercises with details to a selected muscle group (region).
+ * Users enter the exercise name, select the target region from a spinner, and optionally provide exercise details.
+ */
 
 public class AddExerciseActivity extends AppCompatActivity {
     DatabaseReference mReferenceExercise;

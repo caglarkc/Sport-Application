@@ -5,6 +5,42 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/dark_background_color"
     tools:context=".DietPlanDetailsActivity">
+
+    <TextView
+        android:id="@+id/dietPlanNameContainer"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:textSize="25sp"
+        android:textStyle="italic|bold"
+        android:layout_marginBottom="1dp"
+        android:layout_height="wrap_content"
+        android:text="Diet Plan Name"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/dietPlanNameContainer">
+
+        <LinearLayout
+            android:id="@+id/dietPlanContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

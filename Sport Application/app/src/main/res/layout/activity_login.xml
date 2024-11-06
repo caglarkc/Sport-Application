@@ -123,6 +123,7 @@
                 android:textColor="@color/light_text_color"
                 android:gravity="center"
                 android:paddingStart="0dp"
+                android:background="@android:color/transparent"
                 app:backgroundTint="@null" />
 
         </LinearLayout>

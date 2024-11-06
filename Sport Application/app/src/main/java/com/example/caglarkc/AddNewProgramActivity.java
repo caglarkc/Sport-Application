@@ -29,6 +29,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * AddNewProgramActivity: Allows users to add a new workout program.
+ * Users can input details such as program name, number of workdays, and the number of exercise sets for each day.
+ * The program name must be unique, and the number of exercise sets assigned to each day must be within specified limits.
+ * If the number of workdays does not match the selected days or the set values are invalid, users are shown an error message.
+ */
+
 public class AddNewProgramActivity extends AppCompatActivity {
     CheckBox checkBoxMonday, checkBoxTuesday, checkBoxWednesday, checkBoxThursday, checkBoxFriday, checkBoxSaturday, checkBoxSunday;
     SharedPreferences sharedProgram;

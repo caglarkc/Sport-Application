@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Space;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -28,6 +29,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+/**
+ * FoodListActivity: Displays a list of foods with their respective calorie values, and allows users to add new foods.
+ * The foods are loaded from a Firebase database and displayed in a list where each item shows the food name and calorie information.
+ * The activity also includes an option to add a new food item, and it navigates back to the main menu upon pressing back.
+ */
 
 public class FoodListActivity extends AppCompatActivity {
     DatabaseReference mReferenceFoods;
@@ -135,6 +141,16 @@ public class FoodListActivity extends AppCompatActivity {
         buttonFoodName.setTextSize(16);
         buttonFoodName.setAllCaps(false);
         buttonFoodName.setText(name);
+        buttonFoodName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FoodListActivity.this,FoodDetailActivity.class);
+                intent.putExtra("food_name",name);
+                intent.putExtra("back_activity","FoodListActivity");
+                startActivity(intent);
+                finish();
+            }
+        });
 
         FrameLayout frameLayout = new FrameLayout(FoodListActivity.this);
         RelativeLayout.LayoutParams frameLayoutParams = new RelativeLayout.LayoutParams(ninetyPixel, thirtyPixel);
@@ -167,6 +183,16 @@ public class FoodListActivity extends AppCompatActivity {
         buttonCalorie.setTextSize(16);
         buttonCalorie.setAllCaps(false);
         buttonCalorie.setText(calorie);
+        buttonCalorie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(FoodListActivity.this,FoodDetailActivity.class);
+                intent.putExtra("food_name",name);
+                intent.putExtra("back_activity","FoodListActivity");
+                startActivity(intent);
+                finish();
+            }
+        });
 
         frameLayout.addView(buttonCalorie,buttonParams);
         frameLayout.addView(imageView,imageParams);
@@ -182,24 +208,27 @@ public class FoodListActivity extends AppCompatActivity {
         mReferenceFoods.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot foodSnapshot : snapshot.getChildren()) {
+                for (DataSnapshot foodNameSnapshot : snapshot.getChildren()) {
                     String cal = "";
-                    String foodName = "";
-                    for (DataSnapshot detailSnapshot : foodSnapshot.getChildren()) {
+                    String foodName = foodNameSnapshot.getKey();
+                    for (DataSnapshot detailSnapshot : foodNameSnapshot.getChildren()) {
                         String detail = detailSnapshot.getKey();
                         if (detail != null && detail.equals("food_cal")) {
                             cal = detailSnapshot.getValue(String.class);
                             if (cal != null) {
                                 cal = cal.replace("/100gr","");
                             }
-                        }else if (detail != null && detail.equals("food_name")) {
-                            foodName = detailSnapshot.getValue(String.class);
-
                         }
                     }
                     RelativeLayout relativeLayout = createEntryLayout(foodName,cal);
                     container.addView(relativeLayout);
                 }
+                Space space = new Space(FoodListActivity.this);
+                space.setLayoutParams(new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        tenPixel*5
+                ));
+                container.addView(space);
             }
 
             @Override

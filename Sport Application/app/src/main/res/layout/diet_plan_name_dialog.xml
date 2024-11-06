@@ -1,0 +1,19 @@
+<!-- res/layout/diet_plan_name_dialog.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <EditText
+        android:id="@+id/editTextDietPlanName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Diet Plan Name..."
+        android:inputType="text"
+        android:textColorHint="@color/hint_color"
+        android:padding="10dp"
+        android:textColor="@android:color/black"
+        android:background="@drawable/weight_repeat_border" />
+
+</LinearLayout>

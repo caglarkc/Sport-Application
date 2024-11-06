@@ -44,6 +44,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+/**
+ * CheckBodyMeasurementActivity: This activity allows users to review and visualize their body measurement data
+ * by selecting a specific date. Users can choose a year, month, and day from spinners to display measurements
+ * recorded on that date. Measurements are shown as values positioned over specific body parts on an image,
+ * with each label corresponding to the relevant body part (e.g., arm, chest). Users can tap on these labels
+ * to receive further information.
+ *
+ *
+ * Key Components:
+ * - Firebase database integration to retrieve user data.
+ * - Dynamic UI elements displaying measurements over a body image.
+ * - Spinner controls for selecting date.
+ */
 
 public class CheckBodyMeasurementActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
@@ -54,8 +67,9 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
     LinearLayout dateContainer;
     Button buttonCheckDates;
     Spinner yearSpinner, monthSpinner, daySpinner;
-    ConstraintLayout constraintLayoutParent;
+    ConstraintLayout constraintLayoutParent, main;
     ProgressBar progressBar;
+    TextView textViewData;
 
     String sharedUserUid;
     boolean isYearSpinnerInitial = true, isMonthSpinnerInitial = true, isDaySpinnerInitial = true;
@@ -88,6 +102,11 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
         daySpinner = findViewById(R.id.daySpinner);
         dateContainer = findViewById(R.id.dateContainer);
         buttonCheckDates = findViewById(R.id.buttonCheckDates);
+        textViewData = findViewById(R.id.textViewData);
+        main = findViewById(R.id.main);
+
+        textViewData.setVisibility(View.GONE);
+
 
         sharedUser = getSharedPreferences("user_data",MODE_PRIVATE);
         sharedUserUid = sharedUser.getString("user_uid","");
@@ -117,6 +136,7 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
                     public void run() {
                         progressBar.setVisibility(View.GONE);
                         constraintLayoutParent.setVisibility(View.VISIBLE);
+
                     }
                 },500);
 
@@ -190,6 +210,7 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
 
 
     private void clearLayout() {
+        textViewData.setVisibility(View.GONE);
     // FrameLayout içindeki tüm alt öğeleri al
         for (int i = 0; i < frameLayout.getChildCount(); i++) {
             View child = frameLayout.getChildAt(i);
@@ -241,34 +262,93 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
 
 
     private void createEntryLayouts() {
+        String length = "";
+        String weight = "";
+        String neck = "";
+        String shoulder = "";
+        String chest = "";
+        String arm = "";
+        String forearm = "";
+        String abdomen = "";
+        String hip = "";
+        String quad = "";
+        String calf = "";
+
         for (Map.Entry<String , String> entry : hashMapData.entrySet()) {
             String bodyPart = entry.getKey();
             String value = entry.getValue();
 
             if (bodyPart.equals("length")) {
                 createTextView(750,20,value,"length");
+                length = value;
             }else if (bodyPart.equals("weight")) {
                 createTextView(950,20,value,"weight");
+                weight = value;
             }else if (bodyPart.equals("neck")) {
                 createTextView(638,400,value,"neck");
+                neck = value;
             }else if (bodyPart.equals("shoulder")) {
                 createTextView(800,487,value,"shoulder");
+                shoulder = value;
             }else if (bodyPart.equals("chest")) {
                 createTextView(617,531,value,"chest");
+                chest = value;
             }else if (bodyPart.equals("arm")) {
                 createTextView(832,682,value,"arm");
+                arm = value;
             }else if (bodyPart.equals("forearm")) {
                 createTextView(930,899,value,"forearm");
+                forearm = value;
             }else if (bodyPart.equals("abdomen")) {
                 createTextView(600,845,value,"abdomen");
+                abdomen = value;
             }else if (bodyPart.equals("hip")) {
                 createTextView(755,1023,value,"hip");
+                hip = value;
             }else if (bodyPart.equals("quad")) {
                 createTextView(650,1208,value,"quad");
+                quad = value;
             }else if (bodyPart.equals("calf")) {
                 createTextView(795,1708,value,"calf");
+                calf = value;
             }
         }
+
+        // Tüm verileri birleştirerek TextView içerisine yerleştiriyoruz
+        String displayText = "Length: " + length + "\n" +
+                "Weight: " + weight + "\n" +
+                "Neck: " + neck + "\n" +
+                "Shoulder: " + shoulder + "\n" +
+                "Chest: " + chest + "\n" +
+                "Arm: " + arm + "\n" +
+                "Forearm: " + forearm + "\n" +
+                "Abdomen: " + abdomen + "\n" +
+                "Hip: " + hip + "\n" +
+                "Quad: " + quad + "\n" +
+                "Calf: " + calf;
+
+        textViewData.setText(displayText);
+        textViewData.setVisibility(View.VISIBLE);
+        textViewData.bringToFront(); // En üstte olması için
+        textViewData.invalidate();    // Yeniden çizim talebi
+        textViewData.requestLayout();
+        Toast.makeText(CheckBodyMeasurementActivity.this,"For remove textview, click somewhere...",Toast.LENGTH_SHORT).show();
+
+        main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                textViewData.setVisibility(View.GONE);
+            }
+        });
+
+        /*
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                textViewData.setVisibility(View.GONE);
+            }
+        }, 5000);
+         */
     }
 
     @SuppressLint("ClickableViewAccessibility")

@@ -20,6 +20,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+/**
+ * RegistrationFragment: Provides user registration functionality within a fragment.
+ * - Handles user input for email, password, and password confirmation fields.
+ * - Contains password visibility toggle for both password and confirmation fields.
+ * - Includes input validation for email, password strength, and password match, displaying appropriate error messages.
+ * - Calls the parent activity's registration method on successful validation.
+ */
 
 
 public class RegistrationFragment extends Fragment {

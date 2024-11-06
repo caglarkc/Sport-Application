@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
+<!-- checkbox_selector.xml: A selector resource for displaying different icons based on the checked state -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- When the checkbox is checked, use the checked icon -->
     <item android:state_checked="true">
         <layer-list>
             <item android:drawable="@drawable/ic_checked" />
         </layer-list>
     </item>
+    <!-- When the checkbox is unchecked, use the unchecked icon -->
     <item android:state_checked="false">
         <layer-list>
             <item android:drawable="@drawable/ic_unchecked" />

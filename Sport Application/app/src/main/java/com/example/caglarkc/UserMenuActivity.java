@@ -2,6 +2,7 @@ package com.example.caglarkc;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,9 +24,19 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+/**
+ * UserMenuActivity: The main menu for the user to access different app features.
+ * - Buttons navigate to various activities: fitness programs, exercise list, daily check, diet plan, and food list.
+ * - Initializes data for exercises and foods from Firebase, populating static lists for easy access throughout the app.
+ * - Logs out the user on back press and returns to the login screen.
+ */
 
 public class UserMenuActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
@@ -35,6 +47,7 @@ public class UserMenuActivity extends AppCompatActivity {
 
     String foodName, foodUrl;
     int foodCarb, foodFat, foodProtein, foodCal;
+    HashMap<String , Integer> hashMapFoodCalories = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +101,6 @@ public class UserMenuActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot foodSnapshot : snapshot.getChildren()) {
-                    String uid = snapshot.getKey();
                     for (DataSnapshot detailSnapshot : foodSnapshot.getChildren()) {
                         String detail = detailSnapshot.getKey();
                         String x = detailSnapshot.getValue(String.class);
@@ -113,7 +125,9 @@ public class UserMenuActivity extends AppCompatActivity {
                         }
                     }
                     Food food = new Food(foodName, foodCarb, foodFat, foodProtein, foodCal, foodUrl);
+                    hashMapFoodCalories.put(foodName, foodCal);
                 }
+                MainMethods.setHashMapFoodCalories(hashMapFoodCalories);
             }
 
             @Override
@@ -121,8 +135,6 @@ public class UserMenuActivity extends AppCompatActivity {
 
             }
         });
-
-
 
         buttonFitnessProgram.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,4 +195,5 @@ public class UserMenuActivity extends AppCompatActivity {
         finish();
         super.onBackPressed();
     }
+
 }

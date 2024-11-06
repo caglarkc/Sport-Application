@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.TextView;
@@ -35,14 +37,21 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * ExerciseListActivity: This activity displays a list of exercises grouped by muscle regions and allows users to view details of each exercise.
+ * Users can add new exercises or filter exercises by specific muscle regions (e.g., Chest, Back, Legs).
+ * The activity dynamically generates buttons for each exercise and provides options to view exercise details or explore exercises by region.
+ * By selecting a region, users can load and view exercises specific to that body part, which is handled using fragments and animations for a smooth transition.
+ */
 
 public class ExerciseListActivity extends AppCompatActivity {
     DatabaseReference mReferenceExercises;
 
     Button buttonAddExercise, buttonCheckRegion;
     LinearLayout container, buttonContainer, firstPartContainer, secondPartContainer;
-    RelativeLayout capitalContainer;
+    RelativeLayout capitalContainer, activityContainer;
     TextView textViewCapital;
+    ProgressBar progressBar;
 
     Intent intentSuccessfully;
 
@@ -75,6 +84,8 @@ public class ExerciseListActivity extends AppCompatActivity {
         buttonContainer = findViewById(R.id.buttonContainer);
         textViewCapital = findViewById(R.id.textViewCapital);
         capitalContainer = findViewById(R.id.capitalContainer);
+        activityContainer = findViewById(R.id.activityContainer);
+        progressBar = findViewById(R.id.progressBar);
 
         thirtyPixel = (int) TypedValue.applyDimension(
                 TypedValue.COMPLEX_UNIT_DIP,
@@ -214,6 +225,8 @@ public class ExerciseListActivity extends AppCompatActivity {
     }
 
     private void takeExercises(){
+        progressBar.setVisibility(View.VISIBLE);
+        activityContainer.setVisibility(View.GONE);
         mReferenceExercises.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -245,6 +258,13 @@ public class ExerciseListActivity extends AppCompatActivity {
                         }
                     }
                 }
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        progressBar.setVisibility(View.GONE);
+                        activityContainer.setVisibility(View.VISIBLE);
+                    }
+                },200);
             }
 
             @Override

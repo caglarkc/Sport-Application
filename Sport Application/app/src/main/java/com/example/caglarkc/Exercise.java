@@ -3,6 +3,12 @@ package com.example.caglarkc;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * Exercise: A model class representing an exercise, implementing Serializable for data transfer between activities.
+ * Each Exercise object has a name, region, and image associated with its muscle group.
+ * The image is set based on the specified region, with default icons for each major muscle group.
+ * A static list of exercises (`exerciseList`) is maintained for global access.
+ */
 
 public class Exercise implements Serializable {
     private String name, region;

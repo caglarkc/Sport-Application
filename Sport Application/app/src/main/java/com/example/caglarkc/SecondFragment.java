@@ -10,6 +10,11 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.caglarkc.databinding.FragmentSecondBinding;
+/**
+ * SecondFragment: This fragment displays a button that navigates back to the FirstFragment.
+ * - Uses view binding to access and modify the layout views.
+ * - On clicking the button, navigates to FirstFragment using the Navigation Component.
+ */
 
 public class SecondFragment extends Fragment {
 

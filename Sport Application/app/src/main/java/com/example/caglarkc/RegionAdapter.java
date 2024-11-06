@@ -9,6 +9,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+/**
+ * RegionAdapter: Custom adapter for displaying a list of regions.
+ * - Binds each region’s name and image to a layout item, which contains a TextView and an ImageView.
+ * - The "Choose Region" option hides the image to differentiate it visually from other regions.
+ * - Designed for dynamic display within a GridView or ListView for better UI organization of muscle regions.
+ */
 
 public class RegionAdapter extends BaseAdapter {
     private Context context;

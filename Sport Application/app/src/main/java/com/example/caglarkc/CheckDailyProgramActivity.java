@@ -39,6 +39,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * CheckDailyProgramActivity: This activity enables users to view details of their daily fitness programs by selecting a date.
+ * Users can select a year, month, and day from spinners to view exercises and set details for the selected date.
+ * Additionally, users can see a list of all dates for which they have saved program data.
+ */
 public class CheckDailyProgramActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
     DatabaseReference mReferenceDailyProgram;

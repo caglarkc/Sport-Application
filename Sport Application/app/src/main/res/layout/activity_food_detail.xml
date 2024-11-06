@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/dark_background_color"
+    tools:context=".FoodDetailActivity">
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:id="@+id/progressBar"
+        android:indeterminateDrawable="@drawable/custom_progress_bar"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewFoodName"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Food Name"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        android:textColor="@color/white"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+    <ImageView
+        android:id="@+id/imageViewFood"
+        android:background="@drawable/border"
+        android:scaleType="fitCenter"
+        android:layout_marginTop="25dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:layout_constraintTop_toBottomOf="@id/textViewFoodName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/detailContainer"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageViewFood">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_height="40dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:id="@+id/constraintLayoutCal"
+                android:orientation="horizontal"
+                android:layout_height="40dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:id="@+id/ImageViewCal"
+                    android:src="@drawable/blaze_icon"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutCal"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutCal"
+                    app:layout_constraintStart_toStartOf="@id/constraintLayoutCal"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/textViewCal"
+                    android:text="Calorie"
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    android:layout_marginStart="6dp"
+                    android:gravity="center"
+                    android:textColor="@color/light_text_color"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutCal"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutCal"
+                    app:layout_constraintStart_toEndOf="@id/ImageViewCal"/>
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:id="@+id/calContainer"
+                    android:textColor="@color/light_text_color"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutCal"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutCal"
+                    app:layout_constraintEnd_toStartOf="@id/textViewValCal"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/textViewValCal"
+                    android:text="/100gr"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:textColor="@color/light_text_color"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutCal"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutCal"
+                    app:layout_constraintEnd_toEndOf="@id/constraintLayoutCal"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="15dp"
+            android:orientation="vertical"
+            android:layout_height="40dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:id="@+id/constraintLayoutCarb"
+                android:orientation="horizontal"
+                android:layout_height="40dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:id="@+id/ImageViewCarb"
+                    android:src="@drawable/circle_c_icon"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutCarb"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutCarb"
+                    app:layout_constraintStart_toStartOf="@id/constraintLayoutCarb"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/textViewCarb"
+                    android:text="Carbohydrate"
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    android:layout_marginStart="6dp"
+                    android:gravity="center"
+                    android:textColor="@color/light_text_color"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutCarb"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutCarb"
+                    app:layout_constraintStart_toEndOf="@id/ImageViewCarb"/>
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:id="@+id/carbContainer"
+                    android:textColor="@color/light_text_color"
+                    android:textColorHint="@color/hint_color"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutCarb"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutCarb"
+                    app:layout_constraintEnd_toStartOf="@id/textViewValCarb"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/textViewValCarb"
+                    android:text="/100gr"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:textColor="@color/light_text_color"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutCarb"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutCarb"
+                    app:layout_constraintEnd_toEndOf="@id/constraintLayoutCarb"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp"
+            android:layout_height="40dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:id="@+id/constraintLayoutFat"
+                android:orientation="horizontal"
+                android:layout_height="40dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:id="@+id/ImageViewFat"
+                    android:src="@drawable/circle_f_icon"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutFat"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutFat"
+                    app:layout_constraintStart_toStartOf="@id/constraintLayoutFat"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/textViewFat"
+                    android:text="Fat"
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    android:layout_marginStart="6dp"
+                    android:gravity="center"
+                    android:textColor="@color/light_text_color"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutFat"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutFat"
+                    app:layout_constraintStart_toEndOf="@id/ImageViewFat"/>
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:id="@+id/fatContainer"
+                    android:textColor="@color/light_text_color"
+                    android:gravity="center"
+                    android:textSize="18sp"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutFat"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutFat"
+                    app:layout_constraintEnd_toStartOf="@id/textViewValFat"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/textViewValFat"
+                    android:text="/100gr"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:textColor="@color/light_text_color"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutFat"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutFat"
+                    app:layout_constraintEnd_toEndOf="@id/constraintLayoutFat"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginTop="15dp"
+            android:layout_height="40dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:id="@+id/constraintLayoutProtein"
+                android:orientation="horizontal"
+                android:layout_height="40dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:id="@+id/ImageViewProtein"
+                    android:src="@drawable/circle_p_icon"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="10dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutProtein"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutProtein"
+                    app:layout_constraintStart_toStartOf="@id/constraintLayoutProtein"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/textViewProtein"
+                    android:text="Protein"
+                    android:textSize="18sp"
+                    android:textStyle="italic"
+                    android:layout_marginStart="6dp"
+                    android:gravity="center"
+                    android:textColor="@color/light_text_color"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutProtein"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutProtein"
+                    app:layout_constraintStart_toEndOf="@id/ImageViewProtein"/>
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:id="@+id/proteinContainer"
+                    android:textColorHint="@color/hint_color"
+                    android:gravity="center"
+                    android:textColor="@color/light_text_color"
+                    android:textSize="18sp"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutProtein"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutProtein"
+                    app:layout_constraintEnd_toStartOf="@id/textViewValProtein"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:id="@+id/textViewValProtein"
+                    android:text="/100gr"
+                    android:layout_marginEnd="20dp"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:textStyle="italic"
+                    android:textColor="@color/light_text_color"
+                    android:layout_height="40dp"
+                    app:layout_constraintTop_toTopOf="@id/constraintLayoutProtein"
+                    app:layout_constraintBottom_toBottomOf="@id/constraintLayoutProtein"
+                    app:layout_constraintEnd_toEndOf="@id/constraintLayoutProtein"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+        </LinearLayout>
+
+
+
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

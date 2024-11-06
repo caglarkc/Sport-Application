@@ -15,6 +15,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+/**
+ * UsernameFragment: This fragment allows the user to enter a username during the registration process.
+ * - Contains an EditText for username input and a Continue button.
+ * - The Continue button is dynamically styled based on the presence of text in the EditText.
+ * - When a valid username is entered, the Continue button initiates a method in the parent RegisterActivity to proceed with the registration process.
+ */
 
 public class UsernameFragment extends Fragment {
     public UsernameFragment() {}

@@ -54,7 +54,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
-
+/**
+ * AddFoodActivity allows users to add a new food item with its nutritional values and an optional image.
+ * Key features include:
+ * - Input fields for food name, carbohydrates, fat, protein, and calories per 100 grams.
+ * - Validation to ensure unique food names and numeric limits for nutritional values.
+ * - Option to select an image for the food item from the gallery and upload it to Firebase Storage.
+ * - Save food details to Firebase Realtime Database, including download URL for the image.
+ * The activity provides feedback for each step, ensuring a smooth and user-friendly experience.
+ */
 public class AddFoodActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
     DatabaseReference mReferenceFoods;
@@ -67,7 +75,7 @@ public class AddFoodActivity extends AppCompatActivity {
     Button buttonAddFood;
     ImageButton imageButtonAddFoodImage;
 
-    String sharedUserUid, foodName, strCarbVal, strFatVal, strProteinVal, strCalVal, foodUid;
+    String sharedUserUid, foodName, strCarbVal, strFatVal, strProteinVal, strCalVal;
     int carbVal, fatVal, proteinVal, calVal;
     boolean isImageUploaded = false, isFoodExist = false;
 
@@ -158,9 +166,7 @@ public class AddFoodActivity extends AppCompatActivity {
             calVal = Integer.parseInt(strCalVal);
             if (carbVal < 9999 && fatVal < 9999 && proteinVal < 9999 && calVal < 9999) {
                 if (isImageUploaded) {
-                    foodUid = UUID.randomUUID().toString();
                     HashMap<String, String> mData = new HashMap<>();
-                    mData.put("food_name",foodName);
                     mData.put("food_cal", calVal + "/100gr");
                     mData.put("food_carb", carbVal + "/100gr");
                     mData.put("food_fat", fatVal + "/100gr");
@@ -168,12 +174,12 @@ public class AddFoodActivity extends AppCompatActivity {
 
                     // Firebase Storage'a resim yükleme görevi
                     // Firebase Storage'a resim yükleme görevi (Task<Void> haline dönüştürme)
-                    Task<Uri> task1 = mReferenceStorage.child("Foods").child(foodUid).putFile(imageUri)
+                    Task<Uri> task1 = mReferenceStorage.child("Foods").child(foodName).putFile(imageUri)
                             .continueWithTask(task -> {
                                 if (!task.isSuccessful()) {
                                     throw task.getException(); // Yükleme başarısız olursa hatayı fırlat
                                 }
-                                return mReferenceStorage.child("Foods").child(foodUid).getDownloadUrl(); // İndirme URL'sini al
+                                return mReferenceStorage.child("Foods").child(foodName).getDownloadUrl(); // İndirme URL'sini al
                             });
 
                     // Firebase Realtime Database'e yemek verisini kaydetme ve indirme URL'sini ekleme
@@ -187,7 +193,7 @@ public class AddFoodActivity extends AppCompatActivity {
                         mData.put("food_imageUrl", downloadUri.toString()); // İndirme URL'sini mData'ya ekle
 
                         // Firebase Realtime Database'e güncellenmiş mData'yı kaydet
-                        return mReferenceFoods.child(foodUid).setValue(mData);
+                        return mReferenceFoods.child(foodName).setValue(mData);
 
                     }).addOnCompleteListener(task -> {
                         if (task.isSuccessful()) {
@@ -212,55 +218,38 @@ public class AddFoodActivity extends AppCompatActivity {
                     builder.setPositiveButton("Continue", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            imageUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.drawable.food_icon);
-                            foodUid = UUID.randomUUID().toString();
+                            // Daha önce aldığınız sabit URL
+                            String imageUrl = "https://firebasestorage.googleapis.com/v0/b/caglarkc.appspot.com/o/Foods%2FcommonImage?alt=media&token=3b390e87-c1da-4c8b-bad4-97fccf4fb8f4";
+
+                            // Yemek verilerini hazırlıyoruz
                             HashMap<String, String> mData = new HashMap<>();
-                            mData.put("food_name",foodName);
                             mData.put("food_cal", calVal + "/100gr");
                             mData.put("food_carb", carbVal + "/100gr");
                             mData.put("food_fat", fatVal + "/100gr");
                             mData.put("food_protein", proteinVal + "/100gr");
+                            mData.put("food_imageUrl", imageUrl); // Direkt URL'yi ekliyoruz
 
-                            // Firebase Storage'a resim yükleme görevi
-                            // Firebase Storage'a resim yükleme görevi (Task<Void> haline dönüştürme)
-                            Task<Uri> task1 = mReferenceStorage.child("Foods").child(foodUid).putFile(imageUri)
-                                    .continueWithTask(task -> {
-                                        if (!task.isSuccessful()) {
-                                            throw task.getException(); // Yükleme başarısız olursa hatayı fırlat
+                            // Firebase Realtime Database'e güncellenmiş mData'yı kaydetme işlemi
+                            mReferenceFoods.child(foodName).setValue(mData)
+                                    .addOnCompleteListener(task -> {
+                                        if (task.isSuccessful()) {
+                                            // Veri kaydetme işlemi başarılı
+                                            Toast.makeText(getApplicationContext(), "Food data uploaded successfully...", Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(AddFoodActivity.this, FoodListActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            // Veri kaydetme işlemi başarısız
+                                            Toast.makeText(getApplicationContext(), "Failed to upload food data...", Toast.LENGTH_SHORT).show();
                                         }
-                                        return mReferenceStorage.child("Foods").child(foodUid).getDownloadUrl(); // İndirme URL'sini al
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        // Bir hata meydana geldiğinde hata mesajını logla
+                                        Log.d("ERROR", e.getMessage());
                                     });
-
-                            // Firebase Realtime Database'e yemek verisini kaydetme ve indirme URL'sini ekleme
-                            task1.continueWithTask(downloadUrlTask -> {
-                                if (!downloadUrlTask.isSuccessful()) {
-                                    throw downloadUrlTask.getException(); // Eğer indirme URL'sini alma işlemi başarısız olursa hatayı fırlat
-                                }
-
-                                // İndirme URL'sini al
-                                Uri downloadUri = downloadUrlTask.getResult();
-                                mData.put("food_imageUrl", downloadUri.toString()); // İndirme URL'sini mData'ya ekle
-
-                                // Firebase Realtime Database'e güncellenmiş mData'yı kaydet
-                                return mReferenceFoods.child(foodUid).setValue(mData);
-
-                            }).addOnCompleteListener(task -> {
-                                if (task.isSuccessful()) {
-                                    // Yükleme ve veri kaydetme işlemleri başarıyla tamamlandı
-                                    Toast.makeText(getApplicationContext(), "Food and image uploaded successfully...", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(AddFoodActivity.this, FoodListActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    // Bir veya daha fazla işlem başarısız oldu
-                                    Toast.makeText(getApplicationContext(), "Some upload tasks failed...", Toast.LENGTH_SHORT).show();
-                                }
-                            }).addOnFailureListener(e -> {
-                                // Bir hata meydana geldi
-                                Log.d("ERROR", e.getMessage());
-                            });
                         }
                     });
+                    ;
 
                     builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         @Override

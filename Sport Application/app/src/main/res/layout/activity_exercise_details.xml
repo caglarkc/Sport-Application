@@ -8,9 +8,18 @@
     android:layout_height="match_parent"
     tools:context=".ExerciseDetailsActivity">
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:id="@+id/progressBar"
+        android:layout_centerInParent="true"
+        android:indeterminateDrawable="@drawable/custom_progress_bar"
+        android:layout_height="wrap_content" />
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
+        android:id="@+id/activityContainer"
         android:layout_alignParentTop="true"
         android:layout_height="wrap_content">
 

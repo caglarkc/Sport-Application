@@ -20,7 +20,10 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/blaze_icon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.CaglarKc">
+        android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
+        <activity
+            android:name=".FoodDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".AddDayDietPlanToProgramActivity"
             android:exported="false" />
@@ -29,8 +32,7 @@
             android:exported="false" />
         <activity
             android:name=".AddNewDietPlanActivity"
-            android:exported="false"
-            android:theme="@style/Theme.CaglarKc" />
+            android:exported="false" />
         <activity
             android:name=".DietPlanDetailsActivity"
             android:exported="false" />

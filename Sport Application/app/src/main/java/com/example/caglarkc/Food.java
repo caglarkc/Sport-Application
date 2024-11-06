@@ -2,6 +2,12 @@ package com.example.caglarkc;
 
 import java.util.ArrayList;
 import java.util.List;
+/**
+ * Food: Represents a food item with nutritional values including carbohydrates, fat, protein, and calories,
+ * along with an image URL and name. Each food item is stored in a static list, `foodList`, for easy access
+ * and retrieval across the application. This class provides getter methods for each attribute and manages
+ * the static list of all food instances.
+ */
 
 public class Food {
     String name, imageUrl;
