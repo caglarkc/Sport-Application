@@ -89,34 +89,10 @@ public class CheckDailyProgramActivity extends AppCompatActivity {
 
         mReferenceDailyProgram = FirebaseDatabase.getInstance().getReference("Users")
                 .child(sharedUserUid).child("user_dailyFitnessProgramData");
-        progressBar.setVisibility(View.VISIBLE);
-        constraintLayoutParent.setVisibility(View.GONE);
-        mReferenceDailyProgram.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dateSnapshot : snapshot.getChildren()) {
-                    if (dateSnapshot.exists()) {
-                        String date = dateSnapshot.getKey();
-                        if (date != null) {
-                            dateList.add(date);
-                        }
-                    }
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            progressBar.setVisibility(View.GONE);
-                            constraintLayoutParent.setVisibility(View.VISIBLE);
-                            buttonCheckDates.setVisibility(View.VISIBLE);
-                        }
-                    },500);
-                }
-            }
+        progressBar.setVisibility(View.GONE);
+        constraintLayoutParent.setVisibility(View.VISIBLE);
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+        dateList = MainMethods.getDailyProgramDates();
 
         createSpinners();
 

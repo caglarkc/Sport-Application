@@ -96,34 +96,10 @@ public class CheckDailyEatenFoodsActivity extends AppCompatActivity {
                 getResources().getDisplayMetrics()
         );
 
-        constraintLayoutParent.setVisibility(View.GONE);
-        progressBar.setVisibility(View.VISIBLE);
-        mReferenceUser.child("user_dailyEatenFoodsData").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot dateSnapshot : snapshot.getChildren()) {
-                        String date = dateSnapshot.getKey();
-                        if (date != null) {
-                            dateList.add(date);
-                        }
-                    }
-                }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        constraintLayoutParent.setVisibility(View.VISIBLE);
-                        progressBar.setVisibility(View.GONE);
+        constraintLayoutParent.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
 
-                    }
-                },500);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("ERROR",error.getMessage());
-            }
-        });
+        dateList = MainMethods.getDailyEatenFoodDates();
 
 
 

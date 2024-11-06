@@ -35,6 +35,7 @@ public class Exercise implements Serializable {
         }else if (region.equals("Null")){
             this.image = R.drawable.exercise_icon;
         }
+        exerciseList.add(this);
     }
 
     public static List<Exercise> getExerciseList(){

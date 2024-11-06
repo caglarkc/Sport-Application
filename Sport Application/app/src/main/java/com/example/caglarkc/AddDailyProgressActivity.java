@@ -180,8 +180,7 @@ public class AddDailyProgressActivity extends AppCompatActivity {
                                     constraintLayoutParent.setVisibility(View.VISIBLE);
                                 }
                             },500);
-
-                            // Bir sonraki işleme geçin, örneğin başka bir aktiviteyi başlatın
+                            MainMethods.addProgressDate(selectedDate);
                             startActivity(new Intent(AddDailyProgressActivity.this, DailyCheckActivity.class));
                             finish(); // Aktiviteyi sonlandır
                         } else {

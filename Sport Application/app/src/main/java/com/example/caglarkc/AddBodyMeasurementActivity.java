@@ -414,6 +414,7 @@ public class AddBodyMeasurementActivity extends AppCompatActivity {
                 mReferenceUserMeasurement.child(todayDate).setValue(mData).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        MainMethods.addBodyMeasurementDate(todayDate);
                         Toast.makeText(AddBodyMeasurementActivity.this, "Data saved successfully...", Toast.LENGTH_SHORT).show();
                         startActivity(intentSuccessfully); // Redirect to the success activity.
                         finish(); // Close the current activity.
@@ -444,6 +445,7 @@ public class AddBodyMeasurementActivity extends AppCompatActivity {
                 mReferenceUserMeasurement.child(todayDate).setValue(mData).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        MainMethods.addBodyMeasurementDate(todayDate);
                         Toast.makeText(AddBodyMeasurementActivity.this, "Data saved successfully...", Toast.LENGTH_SHORT).show();
                         startActivity(intentSuccessfully); // Redirect to the success activity.
                         finish(); // Close the current activity.

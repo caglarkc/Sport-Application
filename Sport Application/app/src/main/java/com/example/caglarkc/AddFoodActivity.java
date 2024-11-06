@@ -234,6 +234,7 @@ public class AddFoodActivity extends AppCompatActivity {
                                     .addOnCompleteListener(task -> {
                                         if (task.isSuccessful()) {
                                             // Veri kaydetme işlemi başarılı
+                                            Food food = new Food(foodName,carbVal,fatVal,proteinVal,calVal,downloadUri.toString());
                                             Toast.makeText(getApplicationContext(), "Food data uploaded successfully...", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(AddFoodActivity.this, FoodListActivity.class);
                                             startActivity(intent);

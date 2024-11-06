@@ -68,7 +68,6 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
     Button buttonCheckDates;
     Spinner yearSpinner, monthSpinner, daySpinner;
     ConstraintLayout constraintLayoutParent, main;
-    ProgressBar progressBar;
     TextView textViewData;
 
     String sharedUserUid;
@@ -94,7 +93,6 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
             return insets;
         });
         constraintLayoutParent = findViewById(R.id.constraintLayoutParent);
-        progressBar = findViewById(R.id.progressBar);
         frameLayout = findViewById(R.id.frameLayout);
         imageViewBody = findViewById(R.id.imageViewBody);
         yearSpinner = findViewById(R.id.yearSpinner);
@@ -120,34 +118,8 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
                 getResources().getDisplayMetrics()
         );
 
-        progressBar.setVisibility(View.VISIBLE);
-        constraintLayoutParent.setVisibility(View.GONE);
-        mReferenceMeasurementData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dateSnapshot : snapshot.getChildren()) {
-                    String date = dateSnapshot.getKey();
-                    if (date != null) {
-                        dateList.add(date);
-                    }
-                }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        constraintLayoutParent.setVisibility(View.VISIBLE);
 
-                    }
-                },500);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+        dateList = MainMethods.getBodyMeasurementDates();
         createSpinners();
 
         buttonCheckDates.setOnClickListener(new View.OnClickListener() {

@@ -22,6 +22,10 @@ public class MainMethods {
     static Boolean dietPlanChoose;
     static List<String> dietPlanNamesList = new ArrayList<>();
     static HashMap<String , Integer> hashMapFoodCalories = new HashMap<>();
+    static List<String> bodyMeasurementDates = new ArrayList<>();
+    static List<String> dailyEatenFoodDates = new ArrayList<>();
+    static List<String> dailyProgramDates = new ArrayList<>();
+    static List<String> progressDates = new ArrayList<>();
 
     public static boolean isPasswordStrongEnough(String password){
         if (password.length()<8){
@@ -95,5 +99,57 @@ public class MainMethods {
 
     public static void setHashMapFoodCalories(HashMap<String, Integer> hashMap) {
         hashMapFoodCalories = hashMap;
+    }
+
+
+    public static List<String> getProgressDates() {
+        return progressDates;
+    }
+
+    public static  void addProgressDate(String date) {
+        progressDates.add(date);
+    }
+
+    public static void setProgressDates(List<String> list) {
+        progressDates = list;
+    }
+
+
+    public static List<String> getDailyProgramDates() {
+        return dailyProgramDates;
+    }
+
+    public static void addDailyProgramDate(String date) {
+        progressDates.add(date);
+    }
+
+    public static void setDailyProgramDates(List<String> list) {
+        dailyProgramDates = list;
+    }
+
+
+    public static List<String> getBodyMeasurementDates() {
+        return bodyMeasurementDates;
+    }
+
+    public static void addBodyMeasurementDate(String date) {
+        bodyMeasurementDates.add(date);
+    }
+
+    public static void setBodyMeasurementDates(List<String> list) {
+        bodyMeasurementDates = list;
+    }
+
+
+    public static List<String> getDailyEatenFoodDates() {
+        return dailyEatenFoodDates;
+    }
+
+    public static void addDailyEatenFoodDate(String date) {
+        dailyEatenFoodDates.add(date);
+    }
+
+    public static void setDailyEatenFoodDates(List<String> list) {
+        dailyEatenFoodDates = list;
     }
 }

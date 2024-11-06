@@ -682,6 +682,7 @@ public class AddDailyProgramActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
+                                MainMethods.addDailyProgramDate(todayDate);
                                 Toast.makeText(AddDailyProgramActivity.this,"Data is added with successfully...",Toast.LENGTH_SHORT).show();
                                 startActivity(intentSuccessfully);
                                 finish();

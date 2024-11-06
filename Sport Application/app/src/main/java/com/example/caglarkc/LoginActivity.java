@@ -10,6 +10,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,7 +39,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
- /**
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+/**
  * LoginActivity: Provides user authentication functionality, including login, registration redirection, and password visibility toggle.
  * - Firebase Authentication is used to validate user credentials.
  * - UI adjustments are made based on input, including button style changes and password visibility toggle.
@@ -50,22 +55,24 @@ import com.google.firebase.database.ValueEventListener;
 //Vücut Yağ Yüzdesi (%) = 86.010 × log10(bel çevresi - boyun çevresi) - 70.041 × log10(boy) + 36.76
 // Macro tricker da ekleyeceig zve iyecekleri favoriye ekleme de yapacagım
 
-//Optimizasyon için her seferinde exercise ve foodları almasın usermenuactivty de,ilk açıldıgında ve yeni datalar eklendiginde direk nesneye
-// eklesin tekrar tekrar menuye dondukce firebaseden data çekmesin
 
-//Günlük random motivasyon sözleri çıkan bir widget ekle
-//Günlük programı gösteren bir widget ekle.
-//ilk tıkladıgında mail ve şifreni isteyip onları kayedeidp bir sonraki tıklamalrında direk giriş yapıp menuyu acan widgetı ekle
+
+/*
+Günlük random motivasyon sözleri çıkan bir widget ekle
+Günlük programı gösteren bir widget ekle.
+ilk tıkladıgında mail ve şifreni isteyip onları kayedeidp bir sonraki tıklamalrında direk giriş yapıp menuyu acan widgetı ekle
+
+ */
 
 
 //Günlük yapılan egzersiz sonucu ykaılan calori hesaplanıp yediig kalori ile hesaplanıp bir hedef belirleyebilir ve ordan takibi ypaılabilcek bi sayfa
 
 
-//Yeni diet programı ekledim şimdi bunları listeleyen ve tıkladıgımda verileri gosteren activtiy ve ondna sonra da diet prgoramı seçme ve değiştirme işlemlerini ekle
 public class LoginActivity extends AppCompatActivity {
+    DatabaseReference mReferenceExercises, mReferenceFoods, mReferenceUser;
     FirebaseAuth mAuth;
     FirebaseUser mUser;
-    DatabaseReference mReference, mReferenceExercises;
+    DatabaseReference mReference;
 
     EditText editTextEmail, editTextPassword;
     Button buttonRegister, buttonLogin, buttonLoginUser;
@@ -75,6 +82,15 @@ public class LoginActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
 
     String stringEmail, stringPassword;
+    String foodName, foodUrl;
+    int foodCarb, foodFat, foodProtein, foodCal;
+    HashMap<String , Integer> hashMapFoodCalories = new HashMap<>();
+    List<String> progressDatesList = new ArrayList<>();
+    List<String> bodyMeasurementDatesList = new ArrayList<>();
+    List<String> dailyEatenFoodsDatesList = new ArrayList<>();
+    List<String> dailyProgramDatesList = new ArrayList<>();
+    //Optimizasyon için butun dataları giriş yapılrısa eger alıcak şekilde düzenledim ama kontrol etmedim ilki hariç, hepsiin
+    //yine de sıfırdan kotnrol et
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -229,6 +245,9 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this,"You login with successfully...",Toast.LENGTH_SHORT).show();
                     editor.putString("user_uid", mUser.getUid());
                     editor.apply();
+                    mReferenceUser = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid());
+                    getALlDataFromFirebase();
+                    getAllUserDataFromFirebase(mReferenceUser);
                     Intent intent = new Intent(LoginActivity.this,UserMenuActivity.class);
                     startActivity(intent);
                     finish();
@@ -254,6 +273,161 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    private void getALlDataFromFirebase() {
+        Exercise.exerciseList.clear();
+        Exercise exercise = new Exercise("Choose Exercise","Null");
+        Exercise.exerciseList.add(0,exercise);
+        mReferenceExercises = FirebaseDatabase.getInstance().getReference("Exercises");
+        mReferenceExercises.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot regionSnapshot : snapshot.getChildren()){
+                    String region = regionSnapshot.getKey();
+                    if (region != null){
+                        for (DataSnapshot exerciseSnapshot : regionSnapshot.getChildren()){
+                            String exerciseName = exerciseSnapshot.getKey();
+                            Exercise exercise = new Exercise(exerciseName,region);
+                            Exercise.exerciseList.add(exercise);
 
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        Food.getFoodList().clear();
+        mReferenceFoods = FirebaseDatabase.getInstance().getReference("Foods");
+        mReferenceFoods.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot foodSnapshot : snapshot.getChildren()) {
+                    for (DataSnapshot detailSnapshot : foodSnapshot.getChildren()) {
+                        String detail = detailSnapshot.getKey();
+                        String x = detailSnapshot.getValue(String.class);
+                        if (detail != null && x != null ) {
+                            if (detail.equals("food_name")) {
+                                foodName = x;
+                            }else if (detail.equals("food_carb")) {
+                                x = x.replace("/100gr","");
+                                foodCarb = Integer.parseInt(x);
+                            }else if (detail.equals("food_fat")) {
+                                x = x.replace("/100gr","");
+                                foodFat = Integer.parseInt(x);
+                            }else if (detail.equals("food_protein")) {
+                                x = x.replace("/100gr","");
+                                foodProtein = Integer.parseInt(x);
+                            }else if (detail.equals("food_cal")) {
+                                x = x.replace("/100gr","");
+                                foodCal = Integer.parseInt(x);
+                            }else if (detail.equals("food_imageUrl")) {
+                                foodUrl = x;
+                            }
+                        }
+                    }
+                    Food food = new Food(foodName, foodCarb, foodFat, foodProtein, foodCal, foodUrl);
+                    hashMapFoodCalories.put(foodName, foodCal);
+                }
+                MainMethods.setHashMapFoodCalories(hashMapFoodCalories);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+    private void getAllUserDataFromFirebase(DatabaseReference referenceUser) {
+
+        DatabaseReference mReferenceImages = referenceUser.child("user_dailyProgressImages");
+        mReferenceImages.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot dateSnapshot : snapshot.getChildren()) {
+                        String date = dateSnapshot.getKey();
+                        if (date != null) {
+                            progressDatesList.add(date);
+                        }
+                    }
+                    MainMethods.setProgressDates(progressDatesList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("ERROR",error.getMessage());
+            }
+        });
+
+        DatabaseReference mReferenceMeasurementData = referenceUser.child("user_dailyMeasurementData");
+        mReferenceMeasurementData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dateSnapshot : snapshot.getChildren()) {
+                    String date = dateSnapshot.getKey();
+                    if (date != null) {
+                        bodyMeasurementDatesList.add(date);
+                    }
+                }
+                MainMethods.setBodyMeasurementDates(bodyMeasurementDatesList);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("ERROR",error.getMessage());
+            }
+        });
+
+        DatabaseReference mReferenceDailyEatenData = referenceUser.child("user_dailyEatenFoodsData");
+        mReferenceDailyEatenData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot dateSnapshot : snapshot.getChildren()) {
+                        String date = dateSnapshot.getKey();
+                        if (date != null) {
+                            dailyEatenFoodsDatesList.add(date);
+                        }
+                    }
+                    MainMethods.setDailyEatenFoodDates(dailyEatenFoodsDatesList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("ERROR",error.getMessage());
+            }
+        });
+
+        DatabaseReference mReferenceDailyProgramData = referenceUser.child("user_dailyFitnessProgramData");
+        mReferenceDailyProgramData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    for (DataSnapshot dateSnapshot : snapshot.getChildren()) {
+                        if (dateSnapshot.exists()) {
+                            String date = dateSnapshot.getKey();
+                            if (date != null) {
+                                dailyProgramDatesList.add(date);
+                            }
+                        }
+                    }
+                    MainMethods.setDailyProgramDates(dailyProgramDatesList);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("ERROR",error.getMessage());
+            }
+        });
+    }
 
 }

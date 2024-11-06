@@ -46,6 +46,8 @@ import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 /**
  * CheckYourProgressActivity: This activity allows users to view and manage their daily progress images for selected dates.
  * Users can select a year, month, and day to retrieve and display images associated with that date.
@@ -58,7 +60,6 @@ public class CheckYourProgressActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
     DatabaseReference mReferenceUser, mReferenceImages;
 
-    ProgressBar progressBar;
     ConstraintLayout constraintLayoutParent;
     LinearLayout dateContainer, imageButtonContainer;
     Spinner yearSpinner, monthSpinner, daySpinner;
@@ -88,7 +89,6 @@ public class CheckYourProgressActivity extends AppCompatActivity {
         daySpinner = findViewById(R.id.daySpinner);
         dateContainer = findViewById(R.id.dateContainer);
         constraintLayoutParent = findViewById(R.id.constraintLayoutParent);
-        progressBar = findViewById(R.id.progressBar);
         imageButtonContainer = findViewById(R.id.imageButtonContainer);
 
         sharedUser = getSharedPreferences("user_data",MODE_PRIVATE);
@@ -107,9 +107,7 @@ public class CheckYourProgressActivity extends AppCompatActivity {
                 getResources().getDisplayMetrics()
         );
 
-        progressBar.setVisibility(View.VISIBLE);
-        constraintLayoutParent.setVisibility(View.GONE);
-        getDatesFromDatabase();
+        dateList = MainMethods.getProgressDates();
         createSpinners();
 
     }
@@ -200,33 +198,6 @@ public class CheckYourProgressActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
-    private void getDatesFromDatabase() {
-        mReferenceImages.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    for (DataSnapshot dateSnapshot : snapshot.getChildren()) {
-                        String date = dateSnapshot.getKey();
-                        if (date != null) {
-                            dateList.add(date);
-                        }
-                    }
-                }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        progressBar.setVisibility(View.GONE);
-                        constraintLayoutParent.setVisibility(View.VISIBLE);
-                    }
-                },500);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 
     private void showSelectedDate() {
         String selectedYear = (String) yearSpinner.getSelectedItem();

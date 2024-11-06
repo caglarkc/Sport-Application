@@ -8,15 +8,6 @@
     android:background="@color/dark_background_color"
     tools:context=".CheckBodyMeasurementActivity">
 
-    <ProgressBar
-        android:layout_width="wrap_content"
-        android:id="@+id/progressBar"
-        android:indeterminateDrawable="@drawable/custom_progress_bar"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:layout_width="wrap_content"

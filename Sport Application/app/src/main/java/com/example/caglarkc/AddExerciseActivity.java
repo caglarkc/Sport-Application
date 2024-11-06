@@ -3,6 +3,7 @@ package com.example.caglarkc;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -40,7 +41,6 @@ public class AddExerciseActivity extends AppCompatActivity {
 
     RegionAdapter adapter;
     List<Region> regionList = new ArrayList<>();
-    ArrayAdapter<CharSequence> adapterRegion;
     String spinnerText, exerciseName, detail, backActivity;
 
     @Override
@@ -111,6 +111,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()){
+                                                    Exercise exercise = new Exercise(exerciseName,spinnerText);
                                                     Toast.makeText(AddExerciseActivity.this,"Exercise Added With Successfully...",Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent(AddExerciseActivity.this, ExerciseListActivity.class);
                                                     intent.putExtra("back_activity",backActivity);
@@ -131,6 +132,7 @@ public class AddExerciseActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if (task.isSuccessful()){
+                                                    Exercise exercise = new Exercise(exerciseName,spinnerText);
                                                     Toast.makeText(AddExerciseActivity.this,"Exercise Added With Successfully...",Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent(AddExerciseActivity.this, ExerciseListActivity.class);
                                                     intent.putExtra("back_activity",backActivity);

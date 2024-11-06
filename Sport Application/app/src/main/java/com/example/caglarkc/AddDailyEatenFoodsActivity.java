@@ -231,13 +231,10 @@ public class AddDailyEatenFoodsActivity extends AppCompatActivity {
                             String gramValue = gramEditText.getText().toString();
                             gramValue = gramValue + "gr";
 
-                            Log.d("erebus",selectedFood);
-                            Log.d("erebus",selectedTime);
-                            Log.d("erebus",gramValue);
                             // Eğer Spinner'larda "choose" seçili değilse ve EditText boş değilse kaydet
                             if (!selectedFood.equals("Choose Food") && !selectedTime.equals("Choose Time") && !TextUtils.isEmpty(gramValue)) {
                                 mReferenceUser.child("user_dailyEatenFoodsData").child(date).child(selectedTime).child(selectedFood).setValue(gramValue);
-                                Toast.makeText(AddDailyEatenFoodsActivity.this, "hi", Toast.LENGTH_SHORT).show();
+                                MainMethods.addDailyEatenFoodDate(date);
                                 // Ya da veritabanına kaydedebilirsin
                             } else {
                                 // Eğer validasyon başarısızsa hata mesajı göster

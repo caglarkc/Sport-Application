@@ -41,13 +41,11 @@ import java.util.Map;
 public class UserMenuActivity extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseUser mUser;
-    DatabaseReference mReferenceExercises, mReferenceFoods;
+
 
     Button buttonFitnessProgram, buttonExerciseList, buttonDailyCheck, buttonDietPlan, buttonFoodList;
 
-    String foodName, foodUrl;
-    int foodCarb, foodFat, foodProtein, foodCal;
-    HashMap<String , Integer> hashMapFoodCalories = new HashMap<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,72 +67,8 @@ public class UserMenuActivity extends AppCompatActivity {
         buttonDietPlan = findViewById(R.id.buttonDietPlan);
         buttonFoodList = findViewById(R.id.buttonFoodList);
 
-        Exercise.exerciseList.clear();
-        Exercise exercise = new Exercise("Choose Exercise","Null");
-        Exercise.exerciseList.add(0,exercise);
-        mReferenceExercises = FirebaseDatabase.getInstance().getReference("Exercises");
-        mReferenceExercises.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot regionSnapshot : snapshot.getChildren()){
-                    String region = regionSnapshot.getKey();
-                    if (region != null){
-                        for (DataSnapshot exerciseSnapshot : regionSnapshot.getChildren()){
-                            String exerciseName = exerciseSnapshot.getKey();
-                            Exercise exercise = new Exercise(exerciseName,region);
-                            Exercise.exerciseList.add(exercise);
 
-                        }
-                    }
-                }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        Food.getFoodList().clear();
-        mReferenceFoods = FirebaseDatabase.getInstance().getReference("Foods");
-        mReferenceFoods.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot foodSnapshot : snapshot.getChildren()) {
-                    for (DataSnapshot detailSnapshot : foodSnapshot.getChildren()) {
-                        String detail = detailSnapshot.getKey();
-                        String x = detailSnapshot.getValue(String.class);
-                        if (detail != null && x != null ) {
-                            if (detail.equals("food_name")) {
-                                foodName = x;
-                            }else if (detail.equals("food_carb")) {
-                                x = x.replace("/100gr","");
-                                foodCarb = Integer.parseInt(x);
-                            }else if (detail.equals("food_fat")) {
-                                x = x.replace("/100gr","");
-                                foodFat = Integer.parseInt(x);
-                            }else if (detail.equals("food_protein")) {
-                                x = x.replace("/100gr","");
-                                foodProtein = Integer.parseInt(x);
-                            }else if (detail.equals("food_cal")) {
-                                x = x.replace("/100gr","");
-                                foodCal = Integer.parseInt(x);
-                            }else if (detail.equals("food_imageUrl")) {
-                                foodUrl = x;
-                            }
-                        }
-                    }
-                    Food food = new Food(foodName, foodCarb, foodFat, foodProtein, foodCal, foodUrl);
-                    hashMapFoodCalories.put(foodName, foodCal);
-                }
-                MainMethods.setHashMapFoodCalories(hashMapFoodCalories);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
 
         buttonFitnessProgram.setOnClickListener(new View.OnClickListener() {
             @Override
