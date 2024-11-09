@@ -71,14 +71,16 @@ public class AddBodyMeasurementActivity extends AppCompatActivity {
     EditText currentEditText, editTextWeight, editTextLength;
     Button buttonDeleteLastEditText, buttonSaveMeasurements;
 
-    String sharedUserUid, todayDate, measurementType;
+    String sharedUserUid, todayDate, measurementType, abdomen, neck, weight, length;
     HashMap<String , String> hashMapInput = new HashMap<>();
     HashMap<String, String> mData = new HashMap<>();
+    HashMap<String , String> hashMapBfi = new HashMap<>();
 
     Intent intentSuccessfully;
     int hintColor;
     boolean isShoulder = false, isChest = false, isArm = false, isForearm = false, isAbdomen = false,
             isHip = false, isQuad = false, isCalf = false, isNeck = false, isLength = false, isAllEditTextEntered;
+    boolean isA = false, isN = false;
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -264,7 +266,43 @@ public class AddBodyMeasurementActivity extends AppCompatActivity {
                             if (frameLayout.getChildCount() > 1) {
                                 if (!TextUtils.isEmpty(w) && !TextUtils.isEmpty(l)) {
                                     if (checkIsAllDataEntered()) {
-                                        createBuilder(w,l);
+                                        measurementType = "cm"; // Set the measurement type to cm.
+
+                                        for (Map.Entry<String, String> entry : hashMapInput.entrySet()) {
+                                            String regionName = entry.getKey();
+                                            String value = entry.getValue();
+                                            if (regionName.equals("abdomen")) {
+                                                isA = true;
+                                                abdomen = value + "cm";
+                                            }else if (regionName.equals("neck")) {
+                                                isN = true;
+                                                neck = value + "cm";
+                                            }
+                                            mData.put(regionName, value + measurementType);
+                                        }
+                                        weight = w + "kg";
+                                        length = l + "cm";
+
+                                        mData.put("weight", w + "kg");
+                                        mData.put("length", l + "cm");
+
+                                        mReferenceUserMeasurement.child(todayDate).setValue(mData).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (isA && isN) {
+                                                    compareDates();
+                                                }
+                                                MainMethods.addBodyMeasurementDate(todayDate);
+                                                Toast.makeText(AddBodyMeasurementActivity.this, "Data saved successfully...", Toast.LENGTH_SHORT).show();
+                                                startActivity(intentSuccessfully); // Redirect to the success activity.
+                                                finish(); // Close the current activity.
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Toast.makeText(AddBodyMeasurementActivity.this, e.getMessage().toString(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
                                     }else {
                                         Toast.makeText(AddBodyMeasurementActivity.this,"Bütün edittextleri doldurmalısınız...",Toast.LENGTH_SHORT).show();
                                     }
@@ -392,6 +430,7 @@ public class AddBodyMeasurementActivity extends AppCompatActivity {
 
     }
 
+    /*
     private void createBuilder(String w, String l) {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddBodyMeasurementActivity.this);
         builder.setTitle("Choose Type");
@@ -461,6 +500,7 @@ public class AddBodyMeasurementActivity extends AppCompatActivity {
 
         builder.show();
     }
+     */
 
 
     private boolean checkIsAllDataEntered() {
@@ -530,6 +570,30 @@ public class AddBodyMeasurementActivity extends AppCompatActivity {
         frameLayout.addView(editText);
 
         return editText;
+    }
+
+    private void compareDates() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        if (MainMethods.getHashMapBfi().isEmpty()) {
+            hashMapBfi.put(todayDate , abdomen + "_" + neck + "_" + weight + "_" + length);
+
+        }else {
+            hashMapBfi = MainMethods.getHashMapBfi();
+            Map.Entry<String, String> entry = hashMapBfi.entrySet().iterator().next();
+            String key = entry.getKey();
+
+            try {
+                Date keyDate = sdf.parse(key);
+                Date dateToCompare = sdf.parse(todayDate);
+
+                if (dateToCompare.after(keyDate)) {
+                    hashMapBfi.clear();
+                    hashMapBfi.put(todayDate , abdomen + "_" + neck + "_" + weight + "_" + length);
+                }
+            } catch (ParseException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
 }

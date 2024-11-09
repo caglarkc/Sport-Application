@@ -39,7 +39,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * CheckDailyEatenFoodsActivity: This activity allows users to view their food intake records by selecting a specific date.
@@ -57,7 +59,8 @@ public class CheckDailyEatenFoodsActivity extends AppCompatActivity {
 
     boolean isYearSpinnerInitial = true, isMonthSpinnerInitial = true, isDaySpinnerInitial = true;
     String sharedUserUid;
-    int thirtyDp = 30, thirtyPixel, oneHundredTwentyDp = 120, oneHundredTwentyPixel;
+    int thirtyDp = 30, thirtyPixel, oneHundredTwentyDp = 120, oneHundredTwentyPixel,
+            intCarb = 0, intProtein = 0, intFat = 0, intCal = 0;
     ArrayList<String> years = new ArrayList<>();
     ArrayList<String> months = new ArrayList<>();
     ArrayList<String> days = new ArrayList<>();
@@ -199,6 +202,11 @@ public class CheckDailyEatenFoodsActivity extends AppCompatActivity {
     }
 
     private void showSelectedDate() {
+        intCarb = 0;
+        intFat = 0;
+        intProtein = 0;
+        intCal = 0;
+
         String selectedYear = (String) yearSpinner.getSelectedItem();
         String selectedMonth = (String) monthSpinner.getSelectedItem();
         String selectedDay = (String) daySpinner.getSelectedItem();
@@ -249,12 +257,19 @@ public class CheckDailyEatenFoodsActivity extends AppCompatActivity {
                                         linearLayout.setBackgroundResource(R.drawable.border);
                                         tempContainer.addView(linearLayout);
                                     }
+                                    intCarb += (Food.getCarbVal(foodName)) * (Integer.parseInt(gram) / 100.0);
+                                    intFat += (Food.getFatVal(foodName)) * (Integer.parseInt(gram) / 100.0);
+                                    intProtein += (Food.getProVal(foodName)) * (Integer.parseInt(gram) / 100.0);
+                                    intCal += (Food.getCalVal(foodName)) * (Integer.parseInt(gram) / 100.0);
                                 }
                                 container.addView(textView);
                                 container.addView(tempContainer);
                             }
                         }
                     }
+                    LinearLayout l = createMacrosContainer(intCarb,intFat,intProtein,intCal);
+
+
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -274,7 +289,7 @@ public class CheckDailyEatenFoodsActivity extends AppCompatActivity {
 
     private LinearLayout createFoodContainer(String foodName, String gram) {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.MATCH_PARENT,
                 thirtyPixel
         );
         layoutParams.topMargin = 4;
@@ -321,5 +336,65 @@ public class CheckDailyEatenFoodsActivity extends AppCompatActivity {
 
 
         return linearLayout;
+    }
+
+    private LinearLayout createMacrosContainer(int carb, int fat, int pro, int cal) {
+        HashMap<String , Integer> hashMap = new HashMap<>();
+        hashMap.put("Total Carbohydrate",carb);
+        hashMap.put("Total Fat",fat);
+        hashMap.put("Total Protein",pro);
+        hashMap.put("Total Calorie",cal);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.topMargin = thirtyPixel;
+
+        LinearLayout linearLayout = new LinearLayout(CheckDailyEatenFoodsActivity.this);
+        linearLayout.setLayoutParams(layoutParams);
+        linearLayout.setGravity(Gravity.CENTER);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setPadding(10,0,0,0);
+
+        for (Map.Entry<String , Integer> entry : hashMap.entrySet()) {
+            LinearLayout.LayoutParams layoutParamsHorizontal = new LinearLayout.LayoutParams(
+                    RelativeLayout.LayoutParams.MATCH_PARENT,
+                    thirtyPixel
+            );
+            layoutParams.topMargin = thirtyPixel;
+
+            LinearLayout linearLayoutHorizontal = new LinearLayout(CheckDailyEatenFoodsActivity.this);
+            linearLayoutHorizontal.setLayoutParams(layoutParamsHorizontal);
+            linearLayoutHorizontal.setGravity(Gravity.CENTER);
+            linearLayoutHorizontal.setOrientation(LinearLayout.HORIZONTAL);
+            linearLayoutHorizontal.setPadding(10,0,0,0);
+
+            String key = entry.getKey();
+            Integer val = entry.getValue();
+
+            TextView textViewKey = new TextView(CheckDailyEatenFoodsActivity.this);
+            textViewKey.setText(key);
+            textViewKey.setLayoutParams(new ViewGroup.LayoutParams(thirtyPixel*6, thirtyPixel));
+            textViewKey.setTextSize(16);
+            textViewKey.setTypeface(null, Typeface.ITALIC);
+            textViewKey.setTextColor(Color.WHITE);
+            textViewKey.setGravity(Gravity.START|Gravity.CENTER_HORIZONTAL);
+
+            TextView textViewVal = new TextView(CheckDailyEatenFoodsActivity.this);
+            textViewVal.setText(val +"");
+            textViewVal.setLayoutParams(new ViewGroup.LayoutParams(thirtyPixel*2, thirtyPixel));
+            textViewVal.setTextSize(16);
+            textViewVal.setTypeface(null, Typeface.ITALIC);
+            textViewVal.setTextColor(Color.WHITE);
+            textViewVal.setGravity(Gravity.CENTER);
+
+            linearLayoutHorizontal.addView(textViewKey);
+            linearLayoutHorizontal.addView(textViewVal);
+
+            linearLayout.addView(linearLayoutHorizontal);
+        }
+
+        container.addView(linearLayout);
+        return null;
     }
 }

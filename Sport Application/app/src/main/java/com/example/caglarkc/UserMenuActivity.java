@@ -43,7 +43,7 @@ public class UserMenuActivity extends AppCompatActivity {
     FirebaseUser mUser;
 
 
-    Button buttonFitnessProgram, buttonExerciseList, buttonDailyCheck, buttonDietPlan, buttonFoodList;
+    Button buttonFitnessProgram, buttonExerciseList, buttonDailyCheck, buttonDietPlan, buttonFoodList, buttonBfiCalculator;
 
 
 
@@ -66,7 +66,7 @@ public class UserMenuActivity extends AppCompatActivity {
         buttonDailyCheck = findViewById(R.id.buttonDailyCheck);
         buttonDietPlan = findViewById(R.id.buttonDietPlan);
         buttonFoodList = findViewById(R.id.buttonFoodList);
-
+        buttonBfiCalculator = findViewById(R.id.buttonBfiCalculator);
 
 
 
@@ -110,6 +110,15 @@ public class UserMenuActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(UserMenuActivity.this,FoodListActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        buttonBfiCalculator.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserMenuActivity.this,BfiCalculatorActivity.class);
                 startActivity(intent);
                 finish();
             }

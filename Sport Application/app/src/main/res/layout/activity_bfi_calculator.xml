@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:background="@color/dark_background_color"
+    android:layout_height="match_parent"
+    tools:context=".BfiCalculatorActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/textViewCapital"
+        android:text="BFI And BMI Calculator"
+        android:textColor="@color/light_text_color"
+        android:textSize="26sp"
+        android:textStyle="italic|bold"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/textViewDate"
+        android:text="Data taked from 10/02/2024"
+        android:textColor="@color/hint_color"
+        android:textSize="16sp"
+        android:textStyle="italic"
+        android:gravity="start"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCapital"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/textViewBFI"
+            android:text="Your BFI value is: %12"
+            android:textColor="@color/light_text_color"
+            android:textSize="26sp"
+            android:textStyle="italic|bold"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="BFI (%) = 86.010 × log10(waist circumference - neck circumference) - 70.041 × log10(height) + 36.76"
+            android:textColor="@color/hint_color"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:id="@+id/textViewBMI"
+            android:layout_marginTop="80dp"
+            android:text="Your BMI value is: 20.13"
+            android:textColor="@color/light_text_color"
+            android:textSize="26sp"
+            android:textStyle="italic|bold"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:text="BMI = Body Weight / Height^2"
+            android:textColor="@color/hint_color"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+
+    </LinearLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

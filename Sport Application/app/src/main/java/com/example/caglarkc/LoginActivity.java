@@ -39,9 +39,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.text.SimpleDateFormat;
 
 /**
  * LoginActivity: Provides user authentication functionality, including login, registration redirection, and password visibility toggle.
@@ -52,9 +56,9 @@ import java.util.List;
  */
 
 
-//Vücut Yağ Yüzdesi (%) = 86.010 × log10(bel çevresi - boyun çevresi) - 70.041 × log10(boy) + 36.76
-// Macro tricker da ekleyeceig zve iyecekleri favoriye ekleme de yapacagım
+//iyecekleri favoriye ekleme de yapacagım
 
+    //Menu imagelerini düzenle
 
 
 /*
@@ -62,10 +66,15 @@ Günlük random motivasyon sözleri çıkan bir widget ekle
 Günlük programı gösteren bir widget ekle.
 ilk tıkladıgında mail ve şifreni isteyip onları kayedeidp bir sonraki tıklamalrında direk giriş yapıp menuyu acan widgetı ekle
 
+
+Günlük yapılan egzersiz sonucu ykaılan calori hesaplanıp yediig kalori ile hesaplanıp bir hedef belirleyebilir ve ordan takibi ypaılabilcek bi sayfa
+
+ Sonrası için en son optimizasyon kısmında bpi hespalamayı kaldır onun yerine direk daily e measuremnt eklediginde kaydedilsin be ordan dondurulsun
+ aynı şekilde total cal ekleme ve gosterme kısmını sıl tammen gunluk yemek eklenınce guncellenip kaydedilcek ve gostermede databaseden alınacak sekılde ayarla
  */
 
 
-//Günlük yapılan egzersiz sonucu ykaılan calori hesaplanıp yediig kalori ile hesaplanıp bir hedef belirleyebilir ve ordan takibi ypaılabilcek bi sayfa
+
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -83,12 +92,14 @@ public class LoginActivity extends AppCompatActivity {
 
     String stringEmail, stringPassword;
     String foodName, foodUrl;
+    String abdomenData = "empty", neckData = "empty", wData = "empty", lData = "empty";
     int foodCarb, foodFat, foodProtein, foodCal;
     HashMap<String , Integer> hashMapFoodCalories = new HashMap<>();
     List<String> progressDatesList = new ArrayList<>();
     List<String> bodyMeasurementDatesList = new ArrayList<>();
     List<String> dailyEatenFoodsDatesList = new ArrayList<>();
     List<String> dailyProgramDatesList = new ArrayList<>();
+    HashMap<String, String> hashMapBfi = new HashMap<>();
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -247,6 +258,7 @@ public class LoginActivity extends AppCompatActivity {
                     mReferenceUser = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid());
                     getALlDataFromFirebase();
                     getAllUserDataFromFirebase(mReferenceUser);
+                    getUserBfiDataFromFirebase(mReferenceUser);
                     Intent intent = new Intent(LoginActivity.this,UserMenuActivity.class);
                     startActivity(intent);
                     finish();
@@ -429,4 +441,61 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void getUserBfiDataFromFirebase(DatabaseReference referenceUser) {
+        DatabaseReference mReferenceMeasurementData = referenceUser.child("user_dailyMeasurementData");
+        mReferenceMeasurementData.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dateSnapshot : snapshot.getChildren()) {
+                    String date = dateSnapshot.getKey();
+                    if (date != null) {
+                        for (DataSnapshot measurementSnapshot : dateSnapshot.getChildren()) {
+                            String measurement = measurementSnapshot.getKey();
+                            if (measurement != null) {
+                                if (measurement.equals("abdomen")) {
+                                    abdomenData = measurementSnapshot.getValue(String.class);
+                                }else if (measurement.equals("neck")) {
+                                    neckData = measurementSnapshot.getValue(String.class);
+                                }else if (measurement.equals("weight")) {
+                                    wData = measurementSnapshot.getValue(String.class);
+                                }else if (measurement.equals("length")) {
+                                    lData = measurementSnapshot.getValue(String.class);
+                                }
+                            }
+                        }
+                    }
+                    if (!abdomenData.equals("empty") && !neckData.equals("empty") && !wData.equals("empty") && !lData.equals("empty")) {
+                        if (hashMapBfi.isEmpty()) {
+                            hashMapBfi.put(date,abdomenData + "_" + neckData + "_" + wData + "_" + lData);
+                        }else {
+                            Map.Entry<String, String> entry = hashMapBfi.entrySet().iterator().next();
+                            String key = entry.getKey();
+
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+
+                            try {
+                                Date keyDate = sdf.parse(key);
+                                Date dateToCompare = sdf.parse(date);
+
+                                if (dateToCompare.after(keyDate)) {
+                                    hashMapBfi.clear();
+                                    hashMapBfi.put(date,abdomenData + "_" + neckData + "_" + wData + "_" + lData);
+                                }
+                            } catch (ParseException e) {
+                                throw new RuntimeException(e);
+                            }
+
+                        }
+                    }
+                }
+                MainMethods.setHashMapBfi(hashMapBfi);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }
