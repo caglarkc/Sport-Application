@@ -89,8 +89,7 @@ public class LoginActivity extends AppCompatActivity {
     List<String> bodyMeasurementDatesList = new ArrayList<>();
     List<String> dailyEatenFoodsDatesList = new ArrayList<>();
     List<String> dailyProgramDatesList = new ArrayList<>();
-    //Optimizasyon için butun dataları giriş yapılrısa eger alıcak şekilde düzenledim ama kontrol etmedim ilki hariç, hepsiin
-    //yine de sıfırdan kotnrol et
+
 
     @SuppressLint("ClickableViewAccessibility")
     @Override

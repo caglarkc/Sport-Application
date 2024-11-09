@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -284,13 +285,28 @@ public class CheckDailyEatenFoodsActivity extends AppCompatActivity {
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setPadding(10,0,0,0);
 
-        TextView textViewName = new TextView(CheckDailyEatenFoodsActivity.this);
-        textViewName.setText("   " + foodName);
-        textViewName.setLayoutParams(new ViewGroup.LayoutParams(oneHundredTwentyPixel,thirtyPixel));
-        textViewName.setTextSize(16);
-        textViewName.setTypeface(null, Typeface.ITALIC);
-        textViewName.setTextColor(Color.WHITE);
-        textViewName.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+        Button buttonName = new Button(CheckDailyEatenFoodsActivity.this);
+        buttonName.setText("   " + foodName);
+        buttonName.setLayoutParams(new ViewGroup.LayoutParams(oneHundredTwentyPixel,thirtyPixel));
+        buttonName.setTextSize(16);
+        buttonName.setTypeface(null, Typeface.ITALIC);
+        buttonName.setTextColor(Color.WHITE);
+        buttonName.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+        buttonName.setPadding(0,0,0,0);
+        buttonName.setBackgroundColor(Color.TRANSPARENT);
+
+        buttonName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(CheckDailyEatenFoodsActivity.this,FoodDetailActivity.class);
+                intent.putExtra("back_activity","CheckDailyEatenFoodsActivity");
+                intent.putExtra("food_name",foodName);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
 
         TextView textViewGram = new TextView(CheckDailyEatenFoodsActivity.this);
         textViewGram.setText(gram + "gr");
@@ -300,7 +316,7 @@ public class CheckDailyEatenFoodsActivity extends AppCompatActivity {
         textViewGram.setTextColor(Color.WHITE);
         textViewGram.setGravity(Gravity.CENTER);
 
-        linearLayout.addView(textViewName);
+        linearLayout.addView(buttonName);
         linearLayout.addView(textViewGram);
 
 

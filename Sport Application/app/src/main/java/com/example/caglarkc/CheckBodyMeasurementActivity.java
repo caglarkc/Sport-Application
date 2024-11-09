@@ -215,6 +215,7 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
                             String bodyPart = bodyPartSnapshot.getKey();
                             if (bodyPart != null) {
                                 String value = bodyPartSnapshot.getValue(String.class);
+                                System.out.println(value);
                                 hashMapData.put(bodyPart,value);
                             }
                         }
@@ -313,14 +314,6 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                textViewData.setVisibility(View.GONE);
-            }
-        }, 5000);
-         */
     }
 
     @SuppressLint("ClickableViewAccessibility")

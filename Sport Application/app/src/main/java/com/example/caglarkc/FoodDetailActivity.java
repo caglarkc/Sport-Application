@@ -58,6 +58,8 @@ public class FoodDetailActivity extends AppCompatActivity {
             intentSuccessfully = new Intent(FoodDetailActivity.this,DietPlanDetailsActivity.class);
             backActivity2 = intent.getStringExtra("back_activity2");
             intentSuccessfully.putExtra("back_activity",backActivity2);
+        }else if (backActivity.equals("CheckDailyEatenFoodsActivity")) {
+            intentSuccessfully = new Intent(FoodDetailActivity.this,CheckDailyEatenFoodsActivity.class);
         }
 
         progressBar = findViewById(R.id.progressBar);
