@@ -84,7 +84,7 @@ public class DailyCheckActivity extends AppCompatActivity {
         buttonAddBodyMeasurement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DailyCheckActivity.this,AddBodyMeasurementActivity.class);
+                Intent intent = new Intent(DailyCheckActivity.this,AddDailyBodyMeasurementActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -93,7 +93,7 @@ public class DailyCheckActivity extends AppCompatActivity {
         buttonCheckBodyMeasurement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DailyCheckActivity.this,CheckBodyMeasurementActivity.class);
+                Intent intent = new Intent(DailyCheckActivity.this,CheckDailyBodyMeasurementsActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -111,7 +111,7 @@ public class DailyCheckActivity extends AppCompatActivity {
         buttonCheckYourProgress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DailyCheckActivity.this,CheckYourProgressActivity.class);
+                Intent intent = new Intent(DailyCheckActivity.this,CheckDailyProgressActivity.class);
                 startActivity(intent);
                 finish();
             }

@@ -56,7 +56,7 @@ import java.util.Map;
  * Users can delete images by clicking on them and confirming the deletion in a dialog.
  */
 
-public class CheckYourProgressActivity extends AppCompatActivity {
+public class CheckDailyProgressActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
     DatabaseReference mReferenceUser, mReferenceImages;
 
@@ -77,7 +77,7 @@ public class CheckYourProgressActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_check_your_progress);
+        setContentView(R.layout.activity_check_daily_progress);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -109,6 +109,7 @@ public class CheckYourProgressActivity extends AppCompatActivity {
 
         dateList = MainMethods.getProgressDates();
         createSpinners();
+
 
     }
 
@@ -192,7 +193,7 @@ public class CheckYourProgressActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(CheckYourProgressActivity.this,DailyCheckActivity.class);
+        Intent intent = new Intent(CheckDailyProgressActivity.this,DailyCheckActivity.class);
         startActivity(intent);
         finish();
         super.onBackPressed();
@@ -218,7 +219,7 @@ public class CheckYourProgressActivity extends AppCompatActivity {
                                 createEntryLayout(url , imageName);
                             }
                         }
-                        Space space = new Space(CheckYourProgressActivity.this);
+                        Space space = new Space(CheckDailyProgressActivity.this);
                         space.setLayoutParams(new ViewGroup.LayoutParams(
                                 ViewGroup.LayoutParams.MATCH_PARENT
                                 ,fourHundredPixel/4));
@@ -238,19 +239,19 @@ public class CheckYourProgressActivity extends AppCompatActivity {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(threeHundredPixel,fourHundredPixel);
         layoutParams.bottomMargin = 30;
 
-        ImageButton imageButton = new ImageButton(CheckYourProgressActivity.this);
+        ImageButton imageButton = new ImageButton(CheckDailyProgressActivity.this);
         imageButton.setLayoutParams(layoutParams);
         imageButton.setPadding(4,4,4,4);
         imageButton.setBackgroundResource(R.drawable.border);
         imageButton.setScaleType(ImageView.ScaleType.FIT_CENTER);
-        Glide.with(CheckYourProgressActivity.this)
+        Glide.with(CheckDailyProgressActivity.this)
                 .load(url)
                 .into(imageButton);
 
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CheckYourProgressActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(CheckDailyProgressActivity.this);
                 builder.setTitle("DELETE");
                 builder.setMessage("Do you want delete this image ? ");
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -314,6 +315,4 @@ public class CheckYourProgressActivity extends AppCompatActivity {
             }
         }
     }
-
-
 }

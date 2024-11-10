@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,7 +27,7 @@ public class MainMethods {
     static List<String> dailyEatenFoodDates = new ArrayList<>();
     static List<String> dailyProgramDates = new ArrayList<>();
     static List<String> progressDates = new ArrayList<>();
-    static HashMap<String, String> hashMapBfi = new HashMap<>();
+
 
     public static boolean isPasswordStrongEnough(String password){
         if (password.length()<8){
@@ -63,6 +64,16 @@ public class MainMethods {
             return null;
         }
     }
+
+    public static double formatDouble(double val) {
+        // DecimalFormat ile bir ondalık haneye yuvarla
+        DecimalFormat df = new DecimalFormat("#.#");
+        String formattedBfi = df.format(val).replace(",", "."); // Virgülü nokta ile değiştir
+
+        return Double.parseDouble(formattedBfi);
+    }
+
+
 
     public static void setDayDataHashMap(HashMap<String , String> hashMap) {
         if (dayDataHashMap != null) {
@@ -154,11 +165,5 @@ public class MainMethods {
         dailyEatenFoodDates = list;
     }
 
-    public static HashMap<String, String> getHashMapBfi() {
-        return hashMapBfi;
-    }
 
-    public static void setHashMapBfi(HashMap<String, String> hashMap) {
-        hashMapBfi = hashMap;
-    }
 }

@@ -22,6 +22,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
         <activity
+            android:name=".CheckDailyBodyMeasurementsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".CheckDailyProgressActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddDailyBodyMeasurementActivity"
+            android:exported="false" />
+        <activity
             android:name=".BfiCalculatorActivity"
             android:exported="false" />
         <activity

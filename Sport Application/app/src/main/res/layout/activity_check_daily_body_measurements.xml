@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/dark_background_color"
-    tools:context=".CheckBodyMeasurementActivity">
+    tools:context=".CheckDailyBodyMeasurementsActivity">
 
 
     <TextView
@@ -42,6 +42,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:id="@+id/spinnerContainer"
             android:orientation="horizontal"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
@@ -76,6 +77,83 @@
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="25dp"
+            android:id="@+id/textViewContainer"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintTop_toBottomOf="@id/spinnerContainer">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/textViewBfi"
+                android:text="Bfi: 20.51"
+                android:textColorHint="@color/hint_color"
+                android:textColor="@color/white"
+                android:layout_marginEnd="10dp"
+                android:textStyle="italic"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:background="@drawable/border"
+                android:layout_height="34dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:id="@+id/textViewBmi"
+                android:gravity="center"
+                android:text="Bmi: 20.51"
+                android:textColorHint="@color/hint_color"
+                android:textColor="@color/white"
+                android:textStyle="italic"
+                android:textSize="16sp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:background="@drawable/border"
+                android:layout_height="34dp" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/textViewWeight"
+                android:text="80 kg"
+                android:textColorHint="@color/hint_color"
+                android:textColor="@color/white"
+                android:layout_marginEnd="10dp"
+                android:textStyle="italic"
+                android:gravity="center"
+                android:textSize="16sp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:background="@drawable/border"
+                android:layout_height="34dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/textViewLength"
+                android:gravity="center"
+                android:text="135 cm"
+                android:textColorHint="@color/hint_color"
+                android:textColor="@color/white"
+                android:textStyle="italic"
+                android:textSize="16sp"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:background="@drawable/border"
+                android:layout_height="34dp" />
+
+
+
+
+
+        </LinearLayout>
+
 
         <FrameLayout
             android:layout_width="match_parent"

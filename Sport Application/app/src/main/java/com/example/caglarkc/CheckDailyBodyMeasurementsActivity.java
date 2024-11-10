@@ -45,7 +45,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 /**
- * CheckBodyMeasurementActivity: This activity allows users to review and visualize their body measurement data
+ * CheckDailyBodyMeasurementsActivity: This activity allows users to review and visualize their body measurement data
  * by selecting a specific date. Users can choose a year, month, and day from spinners to display measurements
  * recorded on that date. Measurements are shown as values positioned over specific body parts on an image,
  * with each label corresponding to the relevant body part (e.g., arm, chest). Users can tap on these labels
@@ -58,17 +58,17 @@ import java.util.Map;
  * - Spinner controls for selecting date.
  */
 
-public class CheckBodyMeasurementActivity extends AppCompatActivity {
+public class CheckDailyBodyMeasurementsActivity extends AppCompatActivity {
     SharedPreferences sharedUser;
     DatabaseReference mReferenceUser, mReferenceMeasurementData;
 
     ImageView imageViewBody;
     FrameLayout frameLayout;
-    LinearLayout dateContainer;
+    LinearLayout dateContainer, textViewContainer;
     Button buttonCheckDates;
     Spinner yearSpinner, monthSpinner, daySpinner;
     ConstraintLayout constraintLayoutParent, main;
-    TextView textViewData;
+    TextView textViewData, textViewBfi, textViewBmi, textViewWeight, textViewLength;
 
     String sharedUserUid;
     boolean isYearSpinnerInitial = true, isMonthSpinnerInitial = true, isDaySpinnerInitial = true;
@@ -80,18 +80,17 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
     ArrayList<String> days = new ArrayList<>();
     HashMap<String , String> hashMapData = new HashMap<>();
 
-
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_check_body_measurement);
+        setContentView(R.layout.activity_check_daily_body_measurements);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         constraintLayoutParent = findViewById(R.id.constraintLayoutParent);
         frameLayout = findViewById(R.id.frameLayout);
         imageViewBody = findViewById(R.id.imageViewBody);
@@ -101,9 +100,15 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
         dateContainer = findViewById(R.id.dateContainer);
         buttonCheckDates = findViewById(R.id.buttonCheckDates);
         textViewData = findViewById(R.id.textViewData);
+        textViewBfi = findViewById(R.id.textViewBfi);
+        textViewBmi = findViewById(R.id.textViewBmi);
+        textViewWeight = findViewById(R.id.textViewWeight);
+        textViewLength = findViewById(R.id.textViewLength);
         main = findViewById(R.id.main);
+        textViewContainer = findViewById(R.id.textViewContainer);
 
         textViewData.setVisibility(View.GONE);
+        textViewContainer.setVisibility(View.GONE);
 
 
         sharedUser = getSharedPreferences("user_data",MODE_PRIVATE);
@@ -125,18 +130,15 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
         buttonCheckDates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            checkListOfDates();            }
+                checkListOfDates();            }
         });
-
-
-
     }
-
     private void checkListOfDates() {
         clearLayout();
         imageViewBody.setVisibility(View.GONE);
+        textViewContainer.setVisibility(View.GONE);
         dateContainer.setVisibility(View.VISIBLE);
-        LinearLayout linearLayout = new LinearLayout(CheckBodyMeasurementActivity.this);
+        LinearLayout linearLayout = new LinearLayout(CheckDailyBodyMeasurementsActivity.this);
         linearLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -146,14 +148,14 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
 
 
         for (String date : dateList) {
-            LinearLayout miniLayout = new LinearLayout(CheckBodyMeasurementActivity.this);
+            LinearLayout miniLayout = new LinearLayout(CheckDailyBodyMeasurementsActivity.this);
             miniLayout.setLayoutParams(new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
             ));
             miniLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-            ImageView imageView = new ImageView(CheckBodyMeasurementActivity.this);
+            ImageView imageView = new ImageView(CheckDailyBodyMeasurementsActivity.this);
             imageView.setLayoutParams(new ViewGroup.LayoutParams(twentyPixel,twentyPixel));
             imageView.setImageResource(R.drawable.calendar_icon);
 
@@ -163,7 +165,7 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
             );
             layoutParams.bottomMargin = 5;
             layoutParams.leftMargin = 20;
-            TextView textView = new TextView(CheckBodyMeasurementActivity.this);
+            TextView textView = new TextView(CheckDailyBodyMeasurementsActivity.this);
             textView.setLayoutParams(layoutParams);
             textView.setTextColor(Color.WHITE);
             textView.setTextSize(16);
@@ -183,7 +185,8 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
 
     private void clearLayout() {
         textViewData.setVisibility(View.GONE);
-    // FrameLayout içindeki tüm alt öğeleri al
+        textViewContainer.setVisibility(View.GONE);
+        // FrameLayout içindeki tüm alt öğeleri al
         for (int i = 0; i < frameLayout.getChildCount(); i++) {
             View child = frameLayout.getChildAt(i);
 
@@ -207,6 +210,9 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
         String selectedDate = selectedDay + "-" + selectedMonth + "-" + selectedYear;
 
         if (dateList.contains(selectedDate)) {
+            textViewContainer.setVisibility(View.VISIBLE);
+            textViewBfi.setVisibility(View.GONE);
+            textViewBmi.setVisibility(View.GONE);
             mReferenceMeasurementData.child(selectedDate).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -215,7 +221,6 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
                             String bodyPart = bodyPartSnapshot.getKey();
                             if (bodyPart != null) {
                                 String value = bodyPartSnapshot.getValue(String.class);
-                                System.out.println(value);
                                 hashMapData.put(bodyPart,value);
                             }
                         }
@@ -237,26 +242,38 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
     private void createEntryLayouts() {
         String length = "";
         String weight = "";
-        String neck = "";
-        String shoulder = "";
-        String chest = "";
-        String arm = "";
-        String forearm = "";
-        String abdomen = "";
-        String hip = "";
-        String quad = "";
-        String calf = "";
+        String neck = "empty";
+        String shoulder = "empty";
+        String chest = "empty";
+        String arm = "empty";
+        String forearm = "empty";
+        String abdomen = "empty";
+        String hip = "empty";
+        String quad = "empty";
+        String calf = "empty";
+        String bfi = "empty";
+        String bmi = "empty";
 
         for (Map.Entry<String , String> entry : hashMapData.entrySet()) {
             String bodyPart = entry.getKey();
             String value = entry.getValue();
 
             if (bodyPart.equals("length")) {
-                createTextView(750,20,value,"length");
+                textViewLength.setText(value);
+                textViewLength.setVisibility(View.VISIBLE);
                 length = value;
             }else if (bodyPart.equals("weight")) {
-                createTextView(950,20,value,"weight");
+                textViewWeight.setText(value);
+                textViewWeight.setVisibility(View.VISIBLE);
                 weight = value;
+            }else if (bodyPart.equals("bfi")) {
+                textViewBfi.setText("Bfi: "  + value);
+                textViewBfi.setVisibility(View.VISIBLE);
+                bfi = value;
+            }else if (bodyPart.equals("bmi")) {
+                textViewBmi.setText("Bmi: " + value);
+                textViewBmi.setVisibility(View.VISIBLE);
+                bmi = value;
             }else if (bodyPart.equals("neck")) {
                 createTextView(638,400,value,"neck");
                 neck = value;
@@ -290,6 +307,8 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
         // Tüm verileri birleştirerek TextView içerisine yerleştiriyoruz
         String displayText = "Length: " + length + "\n" +
                 "Weight: " + weight + "\n" +
+                "Bfi: " + bfi + "\n" +
+                "Bmi: " + bmi + "\n" +
                 "Neck: " + neck + "\n" +
                 "Shoulder: " + shoulder + "\n" +
                 "Chest: " + chest + "\n" +
@@ -305,7 +324,7 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
         textViewData.bringToFront(); // En üstte olması için
         textViewData.invalidate();    // Yeniden çizim talebi
         textViewData.requestLayout();
-        Toast.makeText(CheckBodyMeasurementActivity.this,"For remove textview, click somewhere...",Toast.LENGTH_SHORT).show();
+        Toast.makeText(CheckDailyBodyMeasurementsActivity.this,"For remove textview, click somewhere...",Toast.LENGTH_SHORT).show();
 
         main.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -318,7 +337,7 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     private TextView createTextView(float x, float y, String size,String region) {
-        TextView textView = new TextView(CheckBodyMeasurementActivity.this);
+        TextView textView = new TextView(CheckDailyBodyMeasurementsActivity.this);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT
@@ -344,7 +363,7 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
                     case MotionEvent.ACTION_UP:
                         // Dokunma bittiğinde yapılacak işlem
                         String x = region.substring(0,1).toUpperCase() + region.substring(1);
-                        Toast.makeText(CheckBodyMeasurementActivity.this,x,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(CheckDailyBodyMeasurementsActivity.this,x,Toast.LENGTH_SHORT).show();
                         Log.d("TouchEvent", "Dokunma bırakıldı");
                         return true;
 
@@ -363,7 +382,7 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(CheckBodyMeasurementActivity.this,DailyCheckActivity.class);
+        Intent intent = new Intent(CheckDailyBodyMeasurementsActivity.this,DailyCheckActivity.class);
         startActivity(intent);
         finish();
         super.onBackPressed();
@@ -452,4 +471,5 @@ public class CheckBodyMeasurementActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {}
         });
     }
+
 }

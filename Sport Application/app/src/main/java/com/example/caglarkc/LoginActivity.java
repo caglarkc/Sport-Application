@@ -99,7 +99,8 @@ public class LoginActivity extends AppCompatActivity {
     List<String> bodyMeasurementDatesList = new ArrayList<>();
     List<String> dailyEatenFoodsDatesList = new ArrayList<>();
     List<String> dailyProgramDatesList = new ArrayList<>();
-    HashMap<String, String> hashMapBfi = new HashMap<>();
+    static HashMap<String , String> hashMapBfi = new HashMap<>();
+    static HashMap<String , String> hashMapBmi = new HashMap<>();
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -258,7 +259,6 @@ public class LoginActivity extends AppCompatActivity {
                     mReferenceUser = FirebaseDatabase.getInstance().getReference("Users").child(mUser.getUid());
                     getALlDataFromFirebase();
                     getAllUserDataFromFirebase(mReferenceUser);
-                    getUserBfiDataFromFirebase(mReferenceUser);
                     Intent intent = new Intent(LoginActivity.this,UserMenuActivity.class);
                     startActivity(intent);
                     finish();
@@ -385,9 +385,16 @@ public class LoginActivity extends AppCompatActivity {
                     String date = dateSnapshot.getKey();
                     if (date != null) {
                         bodyMeasurementDatesList.add(date);
+                        for (DataSnapshot regionSnapshot : dateSnapshot.getChildren()) {
+                            String region = regionSnapshot.getKey();
+                            if (region != null) {
+                                String val = regionSnapshot.getValue(String.class);
+                            }
+                        }
                     }
                 }
                 MainMethods.setBodyMeasurementDates(bodyMeasurementDatesList);
+
             }
 
             @Override
@@ -441,61 +448,4 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void getUserBfiDataFromFirebase(DatabaseReference referenceUser) {
-        DatabaseReference mReferenceMeasurementData = referenceUser.child("user_dailyMeasurementData");
-        mReferenceMeasurementData.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dateSnapshot : snapshot.getChildren()) {
-                    String date = dateSnapshot.getKey();
-                    if (date != null) {
-                        for (DataSnapshot measurementSnapshot : dateSnapshot.getChildren()) {
-                            String measurement = measurementSnapshot.getKey();
-                            if (measurement != null) {
-                                if (measurement.equals("abdomen")) {
-                                    abdomenData = measurementSnapshot.getValue(String.class);
-                                }else if (measurement.equals("neck")) {
-                                    neckData = measurementSnapshot.getValue(String.class);
-                                }else if (measurement.equals("weight")) {
-                                    wData = measurementSnapshot.getValue(String.class);
-                                }else if (measurement.equals("length")) {
-                                    lData = measurementSnapshot.getValue(String.class);
-                                }
-                            }
-                        }
-                    }
-                    if (!abdomenData.equals("empty") && !neckData.equals("empty") && !wData.equals("empty") && !lData.equals("empty")) {
-                        if (hashMapBfi.isEmpty()) {
-                            hashMapBfi.put(date,abdomenData + "_" + neckData + "_" + wData + "_" + lData);
-                        }else {
-                            Map.Entry<String, String> entry = hashMapBfi.entrySet().iterator().next();
-                            String key = entry.getKey();
-
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-
-                            try {
-                                Date keyDate = sdf.parse(key);
-                                Date dateToCompare = sdf.parse(date);
-
-                                if (dateToCompare.after(keyDate)) {
-                                    hashMapBfi.clear();
-                                    hashMapBfi.put(date,abdomenData + "_" + neckData + "_" + wData + "_" + lData);
-                                }
-                            } catch (ParseException e) {
-                                throw new RuntimeException(e);
-                            }
-
-                        }
-                    }
-                }
-                MainMethods.setHashMapBfi(hashMapBfi);
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
 }
